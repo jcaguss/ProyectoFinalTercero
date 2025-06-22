@@ -1,0 +1,196 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background-image: url("../img/basic.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+  min-height: 1364px;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+.nav__container {
+  background-color: #000000;
+  width: 100vw;
+  height: 7vh;
+  margin-bottom: 15vh;
+}
+/* Cambiar luz de los contenedores*/
+h1 {
+  padding: 10px 25px;
+  border: 1px solid #00000043;
+  border-radius: 6px;
+  box-shadow: #000000 -2px 1px 6px;
+  font-size: 2em;
+}
+
+.container__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  background-image: url("../img/rockForm.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 170% 125%;
+  object-fit: contain;
+}
+fieldset {
+  border: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container__fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.fieldset__form__password,
+.fieldset__form__email {
+  max-width: 260px;
+  position: relative;
+}
+form label {
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: #000000;
+}
+
+.inputRow {
+  border: #00000064 2px solid;
+  box-shadow: #00000031 -2px 2px 2px;
+  min-width: 235px;
+  border-radius: 6px;
+  font-size: 0.96em;
+  height: 30px;
+  color: #000000;
+  background-color: #00000002;
+}
+input::placeholder {
+  color: #000000;
+  opacity: 1;
+}
+.fieldset__submit {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  margin-top: -20px;
+}
+input[type="checkbox"]:checked {
+  accent-color: #000;
+}
+
+button {
+  margin-top: 20px;
+  font-weight: bold;
+  padding: 10px 20px;
+  background-color: #00000011;
+  color: #000;
+  border: 1px solid #0000007e;
+  border-radius: 10px;
+  font-size: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: 500ms;
+}
+
+button:hover {
+  background-color: #bbbbbb46;
+  transition: all 500ms;
+}
+.fieldset__form__showPass > input {
+  height: 17px;
+  width: 10%;
+}
+.fieldset__form__showPass > label {
+  padding-top: 10px;
+}
+
+.fieldset__form__showPass {
+  flex-direction: row;
+  justify-content: center;
+  font-size: 0.9em;
+}
+
+/*  Decoracion externa  */
+
+.decor {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 100;
+}
+
+.decor.plant-pone {
+  top: 80px;
+  left: -23px;
+  height: 200px;
+  transform: scale(-1.5, 1.5);
+  z-index: -1;
+  background-image: url("../img/pngegg.png");
+}
+.decor.plant-ptwo {
+  top: 200px;
+  left: -23px;
+  height: 200px;
+  transform: scale(1, 1);
+  z-index: -1;
+  background-image: url("../img/pngegg.png");
+}
+.decor.plant-pthree {
+  top: 40px;
+  left: -23px;
+  height: 200px;
+  transform: scale(1, 1);
+  z-index: -1;
+  background-image: url("../img/pngegg.png");
+}
+
+.decor.plant-poner {
+  top: 80px;
+  right: -23px;
+  height: 200px;
+  transform: scale(-1.5, 1.5);
+  z-index: -1;
+  background-image: url("../img/pngegg.png");
+}
+.decor.plant-ptwor {
+  top: 200px;
+  right: -23px;
+  height: 200px;
+  transform: scale(1, 1);
+  z-index: -1;
+  background-image: url("../img/pngegg.png");
+}
+.decor.plant-pthreer {
+  top: 40px;
+  right: -23px;
+  height: 200px;
+  transform: scale(1, 1);
+  z-index: -1;
+  background-image: url("../img/pngegg.png");
+}
