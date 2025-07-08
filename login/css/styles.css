@@ -1,3 +1,4 @@
+/* * Estilos principales */
 * {
   box-sizing: border-box;
 }
@@ -8,7 +9,7 @@ body {
 }
 
 body {
-  background-image: url("../img/basic.png");
+  background-image: url("../img/fondo1.png");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -24,32 +25,28 @@ body {
 .nav__container {
   background-color: #000000;
   width: 100vw;
-  height: 7vh;
-  margin-bottom: 15vh;
+  height: 50px;
 }
-/* Cambiar luz de los contenedores*/
-h1 {
-  padding: 10px 25px;
-  border: 1px solid #00000043;
-  border-radius: 6px;
-  box-shadow: #000000 -2px 1px 6px;
-  font-size: 2em;
-}
-
 .container__main {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 300px;
-  margin: 0 auto;
   padding: 20px;
   background-image: url("../img/rockForm.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 170% 125%;
+  margin: 12vh auto;
   object-fit: contain;
+}
+h1 {
+  padding: 10px 25px;
+  border: 1px solid #00000043;
+  border-radius: 6px;
+  box-shadow: #000000 -2px 1px 6px;
+  font-size: 2em;
 }
 fieldset {
   border: none;
@@ -58,18 +55,6 @@ fieldset {
   flex-direction: column;
   align-items: center;
 }
-.container__fieldset {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  position: relative;
-}
-.fieldset__form__password,
-.fieldset__form__email {
-  max-width: 260px;
-  position: relative;
-}
 form label {
   font-weight: bold;
   display: inline-block;
@@ -77,10 +62,14 @@ form label {
   font-size: 1.1em;
   color: #000000;
 }
-
+input::placeholder {
+  color: #000000;
+  opacity: 1;
+}
 .inputRow {
   border: #00000064 2px solid;
   box-shadow: #00000031 -2px 2px 2px;
+  width: 100%;
   min-width: 235px;
   border-radius: 6px;
   font-size: 0.96em;
@@ -88,20 +77,34 @@ form label {
   color: #000000;
   background-color: #00000002;
 }
-input::placeholder {
-  color: #000000;
-  opacity: 1;
+.fieldset__form__showPass {
+  flex-direction: row;
+  justify-content: center;
+  font-size: 0.9em;
 }
+input[type="checkbox"]:checked {
+  accent-color: #000;
+}
+
 .fieldset__submit {
   display: flex;
   justify-content: space-around;
   flex-direction: row;
   margin-top: -20px;
 }
-input[type="checkbox"]:checked {
-  accent-color: #000;
+.register {
+  margin: -10px 0 10px 0;
+  color: #000;
 }
-
+.fieldset__form__showPass {
+  flex-direction: row;
+  justify-content: center;
+  font-size: 0.9em;
+}
+.fieldset__form__showPass > input {
+  height: 17px;
+  width: 10%;
+}
 button {
   margin-top: 20px;
   font-weight: bold;
@@ -110,7 +113,7 @@ button {
   color: #000;
   border: 1px solid #0000007e;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 1em;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: 500ms;
@@ -120,22 +123,7 @@ button:hover {
   background-color: #bbbbbb46;
   transition: all 500ms;
 }
-.fieldset__form__showPass > input {
-  height: 17px;
-  width: 10%;
-}
-.fieldset__form__showPass > label {
-  padding-top: 10px;
-}
-
-.fieldset__form__showPass {
-  flex-direction: row;
-  justify-content: center;
-  font-size: 0.9em;
-}
-
-/*  Decoracion externa  */
-
+/* * Estilos de decoracion */
 .decor {
   position: absolute;
   width: 100px;
@@ -144,53 +132,226 @@ button:hover {
   background-repeat: no-repeat;
   z-index: 100;
 }
-
+/* -- Left -- */
 .decor.plant-pone {
-  top: 80px;
-  left: -23px;
+  top: 20px;
   height: 200px;
-  transform: scale(-1.5, 1.5);
+  left: -23px;
   z-index: -1;
   background-image: url("../img/pngegg.png");
 }
 .decor.plant-ptwo {
-  top: 200px;
-  left: -23px;
+  top: 10px;
   height: 200px;
-  transform: scale(1, 1);
+  left: -23px;
   z-index: -1;
   background-image: url("../img/pngegg.png");
 }
 .decor.plant-pthree {
-  top: 40px;
-  left: -23px;
+  top: 100px;
   height: 200px;
-  transform: scale(1, 1);
+  left: -23px;
   z-index: -1;
   background-image: url("../img/pngegg.png");
 }
-
+/* -- Right -- */
 .decor.plant-poner {
-  top: 80px;
-  right: -23px;
+  top: 20px;
   height: 200px;
-  transform: scale(-1.5, 1.5);
+  right: -23px;
   z-index: -1;
   background-image: url("../img/pngegg.png");
 }
 .decor.plant-ptwor {
-  top: 200px;
-  right: -23px;
+  top: 10px;
   height: 200px;
-  transform: scale(1, 1);
+  right: -23px;
   z-index: -1;
   background-image: url("../img/pngegg.png");
 }
 .decor.plant-pthreer {
-  top: 40px;
-  right: -23px;
+  top: 100px;
   height: 200px;
-  transform: scale(1, 1);
+  right: -23px;
   z-index: -1;
   background-image: url("../img/pngegg.png");
+}
+
+/* Pantallas grandes: 992px en adelante */
+@media (min-width: 991px) {
+  .container__main {
+    width: 600px;
+    background-size: 160% 125%;
+    height: 65vh;
+  }
+  fieldset {
+    align-items: start;
+  }
+  .container__fieldset {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    font-size: 1.2em;
+  }
+  .fieldset__form__password,
+  .fieldset__form__email {
+    width: 380px;
+    position: relative;
+  }
+  .fieldset__form__showPass > input {
+    margin-top: 1px;
+  }
+  .inputRow {
+    font-size: 1.1em;
+  }
+  .register {
+    display: flex;
+    justify-content: center;
+    margin: -10px 0 10px 0;
+    color: #000;
+  }
+  /*  Decoracion externa  */
+  /* -- Left -- */
+  .decor.plant-pone {
+    transform: scale(-3, 3);
+  }
+  .decor.plant-ptwo {
+    transform: scale(2.5, 2.5);
+  }
+  .decor.plant-pthree {
+    transform: scale(-2.5, 2.5);
+  }
+  /* -- Right -- */
+  .decor.plant-poner {
+    transform: scale(-3, 3);
+  }
+  .decor.plant-ptwor {
+    transform: scale(2.5, 2.5);
+  }
+  .decor.plant-pthreer {
+    transform: scale(2.5, 3);
+  }
+}
+
+/* Tablets: 577px a 991px */
+@media (min-width: 577px) and (max-width: 991px) {
+  .container__main {
+    width: 450px;
+    background-size: 170% 125%;
+  }
+  fieldset {
+    align-items: start;
+  }
+  .container__fieldset {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+  .fieldset__form__password,
+  .fieldset__form__email {
+    width: 330px;
+    position: relative;
+  }
+  form label {
+    font-size: 1.2em;
+  }
+  .inputRow {
+    font-size: 1.1em;
+  }
+  .fieldset__form__showPass > input {
+    margin-top: 1px;
+  }
+  .register {
+    display: flex;
+    justify-content: center;
+    margin: -10px 0 10px 0;
+    color: #000;
+  }
+  button {
+    font-size: 0.96em;
+  }
+  /*  Decoracion externa  */
+  /* -- Left -- */
+  .decor.plant-pone {
+    transform: scale(-2.5, 2.5);
+  }
+  .decor.plant-ptwo {
+    transform: scale(2, 2);
+  }
+  .decor.plant-pthree {
+    transform: scale(-2, 2);
+  }
+  /* -- Right -- */
+  .decor.plant-poner {
+    transform: scale(-2.5, 2.5);
+  }
+  .decor.plant-ptwor {
+    transform: scale(2, 2);
+  }
+  .decor.plant-pthreer {
+    transform: scale(2, 2);
+  }
+}
+
+/* Responsive: móviles de 320px a 576px */
+@media (max-width: 576px) {
+  .container__main {
+    width: 310px;
+    background-size: 170% 125%;
+  }
+
+  .container__fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+  .fieldset__form__password,
+  .fieldset__form__email {
+    max-width: 260px;
+    position: relative;
+  }
+  form label {
+    font-size: 1.1em;
+  }
+
+  .inputRow {
+    font-size: 0.96em;
+  }
+  .fieldset__form__showPass > label {
+    padding-top: 10px;
+  }
+  button {
+    font-size: 0.8em;
+  }
+
+  /*  Decoracion externa  */
+  /* -- Left -- */
+  .decor.plant-pone {
+    transform: scale(-1.5, 1.5);
+  }
+  .decor.plant-ptwo {
+    transform: scale(1, 1);
+  }
+  .decor.plant-pthree {
+    top: 100px;
+    left: -23px;
+    height: 200px;
+    transform: scale(-1, 1);
+    z-index: -1;
+    background-image: url("../img/pngegg.png");
+  }
+  /* -- Right -- */
+  .decor.plant-poner {
+    transform: scale(-1.5, 1.5);
+  }
+  .decor.plant-ptwor {
+    transform: scale(1, 1);
+  }
+  .decor.plant-pthreer {
+    transform: scale(1, 1);
+  }
 }
