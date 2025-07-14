@@ -1,0 +1,170 @@
+@font-face {
+  font-family: "FontDraftosaurios";
+  src: url("../fonts/CroteauRegular.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "FontDraftosaurios", sans-serif;
+  background: url("../img/fondo1.png") center/cover no-repeat;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.navbar {
+  z-index: 1000;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0000002b;
+  border-bottom: 2px solid #0000001d;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+.userMenu {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  right: 20px;
+  width: 150px;
+  height: 160px;
+  display: none;
+  font-size: 20px;
+  border: none;
+  background: url("../img/piedra2.png") center no-repeat;
+  background-size: 100% 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-content: center;
+}
+
+.userMenu:hover .dropdown,
+.dropdown:hover {
+  display: block;
+}
+
+.dropdown p {
+  margin: 8px 0;
+  padding: 10px;
+  color: #f4b06e;
+  cursor: pointer;
+  border-radius: 8px;
+  background: transparent;
+  text-shadow: 1px 1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+    -1px -1px 0 black;
+  font-size: clamp(1.3rem, 1.5vw, 2rem);
+}
+
+.dropdown p:hover {
+  color: #507f5c;
+}
+
+.menuButton {
+  background: url("../img/button2.png") center no-repeat;
+  color: #f2bc4e;
+  font-family: "FontDraftosaurios", sans-serif;
+  text-shadow: 1px 1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+    -1px -1px 0 black;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  background-size: 100% 100%;
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.menuButton:hover {
+  color: #507f5c;
+}
+
+.mainButtons {
+  width: 100%;
+  margin-top: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 40px;
+  gap: 6vh;
+  margin-top: 150px;
+}
+
+.mainButton {
+  font-size: 40px;
+  width: 400px;
+  height: 125px;
+}
+
+.userButton {
+  width: 170px;
+  height: 50px;
+  font-size: 30px;
+  margin-right: 15px;
+}
+
+.helpButton {
+  width: 160px;
+  height: 50px;
+  font-size: 26px;
+}
+
+.title {
+  padding: 5px 10px;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+footer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+@media (max-width: 576px) {
+  .mainButtons {
+    margin-top: 170px;
+  }
+
+  .mainButton {
+    width: 90%;
+    height: 90px;
+  }
+
+  .userButton {
+    width: 125px;
+    height: 45px;
+    font-size: 21px;
+  }
+
+  .helpButton {
+    width: 170px;
+    height: 65px;
+    font-size: 21px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 991px) {
+  .mainButton {
+    width: 330px;
+  }
+
+  .userButton {
+    width: 155px;
+  }
+
+  .helpButton {
+    width: 145px;
+  }
+}
