@@ -43,6 +43,8 @@ Este proyecto es una adaptación digital del juego de mesa Draftosaurus. Este re
 /ProyectoFinalTercero
 │
 ├── frontend/
+│   ├──fonts/
+│   ├──img/
 │   ├── styles/
 │   │   ├── login.css
 │   │   ├── register.css
