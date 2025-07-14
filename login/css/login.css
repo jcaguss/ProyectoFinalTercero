@@ -2,6 +2,10 @@
 * {
   box-sizing: border-box;
 }
+@font-face {
+  font-family: "FuenteDraftosaurios";
+  src: url("../fonts/CroteauRegular.ttf") format("truetype");
+}
 
 html,
 body {
@@ -19,13 +23,30 @@ body {
   min-width: 100vw;
   width: 100vw;
   height: 100vh;
-  font-family: Arial, sans-serif;
+  font-family: "FuenteDraftosaurios", sans-serif;
+  letter-spacing: 1.3px;
   margin: 0;
 }
-.nav__container {
-  background-color: #000000;
-  width: 100vw;
-  height: 50px;
+
+/** --- Nav --- */
+.container__nav {
+  background-color: #0000002b;
+  border-bottom: 2px solid #0000001d;
+}
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 60px;
+}
+.logo {
+  margin-left: 15px;
+  background-image: url("../img/Logo.png");
+  background-size: 129% 132%;
+  background-position: center center;
+  width: auto;
+  height: 70px;
+  width: 150px;
 }
 .container__main {
   display: flex;
@@ -38,7 +59,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 170% 125%;
-  margin: 12vh auto;
+  margin: 40px auto;
   object-fit: contain;
 }
 h1 {
@@ -46,7 +67,7 @@ h1 {
   border: 1px solid #00000043;
   border-radius: 6px;
   box-shadow: #000000 -2px 1px 6px;
-  font-size: 2em;
+  font-size: 2.3em;
 }
 fieldset {
   border: none;
@@ -113,7 +134,9 @@ button {
   color: #000;
   border: 1px solid #0000007e;
   border-radius: 10px;
-  font-size: 1em;
+  font-family: "FuenteDraftosaurios", sans-serif;
+  font-size: 1.4em;
+  letter-spacing: 1.3px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: 500ms;
@@ -182,7 +205,8 @@ button:hover {
   .container__main {
     width: 600px;
     background-size: 160% 125%;
-    height: 65vh;
+    height: 450px;
+    margin: 70px auto;
   }
   fieldset {
     align-items: start;
@@ -201,6 +225,9 @@ button:hover {
   }
   .fieldset__form__showPass > input {
     margin-top: 1px;
+  }
+  form label {
+    font-size: 1.4em;
   }
   .inputRow {
     font-size: 1.1em;
@@ -255,7 +282,7 @@ button:hover {
     position: relative;
   }
   form label {
-    font-size: 1.2em;
+    font-size: 1.4em;
   }
   .inputRow {
     font-size: 1.1em;
@@ -270,7 +297,7 @@ button:hover {
     color: #000;
   }
   button {
-    font-size: 0.96em;
+    font-size: 1.3em;
   }
   /*  Decoracion externa  */
   /* -- Left -- */
@@ -301,6 +328,9 @@ button:hover {
     width: 310px;
     background-size: 170% 125%;
   }
+  h1 {
+    font-size: 2em;
+  }
 
   .container__fieldset {
     display: flex;
@@ -315,7 +345,7 @@ button:hover {
     position: relative;
   }
   form label {
-    font-size: 1.1em;
+    font-size: 1.4em;
   }
 
   .inputRow {
@@ -325,7 +355,7 @@ button:hover {
     padding-top: 10px;
   }
   button {
-    font-size: 0.8em;
+    font-size: 1.2em;
   }
 
   /*  Decoracion externa  */
