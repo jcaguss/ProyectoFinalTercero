@@ -1,0 +1,269 @@
+@font-face {
+  font-family: "FuenteDraftosaurios";
+  src: url("fonts/CroteauRegular.ttf") format("truetype");
+}
+* {
+  margin: 0;
+  font-family: "FuenteDraftosaurios", "sans-serif";
+  font-size: large;
+}
+
+body {
+background-image: url(img/fondo\ verdadero.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;    
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+h1{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:black;
+  padding: 10px 25px;
+  border: 1px solid #00000043;
+  border-radius: 6px;
+  box-shadow: #000000 -2px 1px 6px;
+  font-size: 1.5em;
+  margin-top: 15px;
+}
+
+.contenedor_form {
+  
+ display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  background-image: url("/img/piedra.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 170% 125%;
+  object-fit: contain;
+  width: 500px;
+  height: 65vh;
+  transform: scale(1.05);
+  
+  
+}
+
+form {
+ 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+
+
+label {
+  font-size: 1.1rem;
+  margin-top: 10px;
+  
+}
+
+input {
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #050505;
+  border-radius: 5px;
+  background-color: #05050500;
+  
+}
+
+button {
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 6px;
+  cursor: pointer;
+  width: 50%;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.error {
+  color: rgb(128, 23, 23);
+  font-size: 1rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.arriba{
+  background-color: rgba(0, 0, 0, 0);
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  
+}
+
+.checkbox_linea {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+input[type="checkbox"]:checked {
+  accent-color: #000;
+}
+.abajo{
+  width: 80%;
+  font-size: large;
+}
+.arriba{
+  width: auto;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  color: #000;
+  margin-top: 5px;
+  font-size: 1.25rem;
+}
+.submit {
+  display: flex;
+  justify-content: center;
+  gap: 50px;                /* Espacio entre botones */
+  margin-top: 10px;
+}
+
+/* Tablets: 577px a 991px */
+@media (min-width: 577px) and (max-width: 991px) {
+  body{
+
+    width: auto;
+  }
+  h1 {
+    font-size: 1.25rem;
+    margin-top: 18px;
+    height: auto;
+    margin-bottom: 5px;
+  }
+   .contenedor_form {
+    width: 400px;
+    padding: 25px;
+    background-size: 150% 125%;
+    height: 75%;
+    position: relative;
+    transform:scale(1);
+  }
+
+   label {
+    font-size: 1.2rem;
+   margin: 1px;
+   width: auto;
+  }
+
+  input {
+    font-size: 1.2rem;
+    width: auto;
+  }
+  
+  
+
+  button {
+    width: auto;
+    font-size: 1rem;
+    position: relative;
+  }
+
+  .submit {
+    gap: 60px;
+    flex-direction: row;
+    justify-content: center;
+    
+  }
+
+  .login {
+    font-size: 1.2rem;
+  }
+
+  .arriba {
+    width: auto;
+    
+  }
+
+  .abajo {
+    width: 80%;
+  }
+}
+
+
+/* Responsive: móviles de 320px a 576px */
+@media (max-width: 576px) {
+  body{
+    
+   width: auto;
+    
+  }
+  h1 {
+    font-size: 1.3rem;
+    margin-top: 18px;
+    margin-bottom: 5px;
+  }
+   .contenedor_form {
+    width: 320px;
+    padding: 25px;
+    background-size: 170% 125%;
+    height: 85%;
+    position: relative;
+    transform: scale(0.80);
+  }
+
+   label {
+    font-size: 1.2rem;
+    width: auto;
+  }
+
+  input {
+    font-size: 1.1rem;
+    max-width: 260px;
+    position: relative;
+    width: auto;
+    
+  }
+
+  button {
+    width: auto;
+    font-size: 1.09rem;
+    position: relative;
+    height: 30%;
+    
+  }
+
+  .submit {
+    gap: 65px;
+    flex-direction: row;
+    justify-content: center;
+    
+  }
+
+  .login {
+    font-size: 1.1rem;
+  }
+
+  .arriba {
+    width: auto;
+  }
+
+  .abajo {
+    width: 80%;
+    
+    
+  }
+}
