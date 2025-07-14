@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/login.css" />
+    <title>Login</title>
+  </head>
+  <body>
+    <header class="container__nav">
+      <nav class="nav">
+        <div class="logo"></div>
+      </nav>
+    </header>
+    <div class="decor plant-pone"></div>
+    <div class="decor plant-ptwo"></div>
+    <div class="decor plant-pthree"></div>
+    <div class="decor plant-poner"></div>
+    <div class="decor plant-ptwor"></div>
+    <div class="decor plant-pthreer"></div>
+    <main class="container__main">
+      <h1>Login</h1>
+      <form class="form__container" action="" method="post">
+        <div class="container__fieldset">
+          <fieldset class="fieldset__form__email">
+            <label for="email">Usuario o Email:</label>
+            <input
+              class="inputRow"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="agustincaceresm@gmail.com"
+            />
+          </fieldset>
+          <fieldset class="fieldset__form__password">
+            <label class="label__password" for="password">Contraseña:</label>
+            <input
+              class="inputRow"
+              type="password"
+              id="password"
+              name="password"
+            />
+          </fieldset>
+          <fieldset class="fieldset__form__showPass">
+            <label for="showPass">Mostrar Contraseña?</label>
+            <input id="showPass" type="checkbox" />
+          </fieldset>
+          <a class="register" href="./register.html">Registrarse</a>
+
+          <fieldset class="fieldset__submit">
+            <button type="submit" value="Enviar">Enviar</button>
+            <button type="reset" value="Limpiar">Limpiar</button>
+          </fieldset>
+        </div>
+      </form>
+      <span></span>
+    </main>
+    <div class="decor top-left"></div>
+  </body>
+  <script src="./js/login.js"></script>
+</html>
