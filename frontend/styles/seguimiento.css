@@ -97,7 +97,6 @@ body {
 }
 .comienza:hover {
   background-size: 132% 370%;
-  font-size: 21.4px;
 }
 /** --- Tablero --- */
 .container__tabla {
