@@ -20,6 +20,8 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  letter-spacing: 1.3px;
+  
 }
 h1 {
   display: flex;
@@ -34,7 +36,7 @@ h1 {
   margin-top: 15px;
 }
 
-.contenedor_form {
+.form_container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,7 +51,7 @@ h1 {
   background-size: 170% 125%;
   object-fit: contain;
   width: 500px;
-  height: 65vh;
+  height: 70vh;
   transform: scale(1.05);
 }
 
@@ -92,7 +94,7 @@ button:hover {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.arriba {
+.up {
   background-color: rgba(0, 0, 0, 0);
   padding: 10px;
   border-top-left-radius: 10px;
@@ -110,13 +112,15 @@ button:hover {
 input[type="checkbox"]:checked {
   accent-color: #000;
 }
-.abajo {
+.down {
   width: 80%;
   font-size: large;
 }
-.arriba {
+.up {
   width: auto;
 }
+
+
 
 .login {
   display: flex;
@@ -144,13 +148,15 @@ input[type="checkbox"]:checked {
     height: auto;
     margin-bottom: 5px;
   }
-  .contenedor_form {
-    width: 400px;
-    padding: 25px;
+  .form_container {
+    width: 60%;
+    padding: 60px;
     background-size: 150% 125%;
-    height: 75%;
+    height: 68vh;
     position: relative;
     transform: scale(1);
+    margin: 0 100px ;
+    font-size: 0.5rem;
   }
 
   label {
@@ -162,12 +168,14 @@ input[type="checkbox"]:checked {
   input {
     font-size: 1.2rem;
     width: auto;
+    margin: 5px 5px;
   }
 
   button {
-    width: auto;
+    width: 50vw;
     font-size: 1rem;
     position: relative;
+
   }
 
   .submit {
@@ -180,11 +188,12 @@ input[type="checkbox"]:checked {
     font-size: 1.2rem;
   }
 
-  .arriba {
+  .up {
     width: auto;
+    height: 10vh;
   }
 
-  .abajo {
+  .down {
     width: 80%;
   }
 }
@@ -195,15 +204,15 @@ input[type="checkbox"]:checked {
     width: auto;
   }
   h1 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin-top: 18px;
     margin-bottom: 5px;
   }
-  .contenedor_form {
-    width: 320px;
-    padding: 25px;
+  .form_container {
+    width: 400px;
+    padding: 35px;
     background-size: 170% 125%;
-    height: 85%;
+    height: 85vh;
     position: relative;
     transform: scale(0.8);
   }
@@ -221,10 +230,11 @@ input[type="checkbox"]:checked {
   }
 
   button {
-    width: auto;
+    width: 50vw;
     font-size: 1.09rem;
     position: relative;
     height: 30%;
+
   }
 
   .submit {
@@ -237,11 +247,11 @@ input[type="checkbox"]:checked {
     font-size: 1.1rem;
   }
 
-  .arriba {
+  .up {
     width: auto;
   }
 
-  .abajo {
+  .down {
     width: 80%;
   }
 }
