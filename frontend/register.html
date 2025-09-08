@@ -13,9 +13,20 @@
     />
   </head>
   <body>
-    <div class="contenedor_form">
-      <div class="arriba"><h1>Registro de Usuario</h1></div>
-      <div class="abajo">
+    <header class="navbar">
+    <div class="logo">
+      <img src="./img/Logo.png" alt="Logo del juego" />
+    </div>
+  </header>
+<main>
+    <div class="button_back">
+      <a href="./menu-player.html">
+      <button  type="button">Volver al Menu</button>
+      </a>
+    </div>
+    <div class="form_container">
+      <div class="up"><h1>Registro de Usuario</h1></div>
+      <div class="down">
         <form id="form_registro">
           <label for="nombre">Ingrese Nombre Usuario </label>
           <input type="text" id="nombre" name="nombre" />
@@ -45,7 +56,7 @@
       </div>
       <span id="mensaje_error" class="error"></span>
     </div>
-
+</main>
     <script src="./js/register.js"></script>
   </body>
 </html>

@@ -6,6 +6,7 @@
   margin: 0;
   font-family: "FuenteDraftosaurios", "sans-serif";
   font-size: large;
+  box-sizing: border-box;
 }
 
 body {
@@ -23,6 +24,38 @@ body {
   letter-spacing: 1.3px;
   
 }
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0000002b;
+  border-bottom: 2px solid #0000001d;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Contenido principal debajo de la navbar */
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 70px; /* deja espacio para la navbar */
+  padding-bottom: 70px; /* deja espacio para el botón de abajo */
+}
+
 h1 {
   display: flex;
   align-items: center;
@@ -42,26 +75,35 @@ h1 {
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 300px;
   margin: 0 auto;
   padding: 20px;
   background-image: url("../img/rockForm.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 170% 125%;
+  background-size: 175% 129%;
   object-fit: contain;
   width: 500px;
-  height: 70vh;
-  transform: scale(1.05);
+  height: 65vh;
+  
+
+   /* en lugar de fijo */
+  width: 80%;
+  max-width: 500px;
+  height: auto;
+  min-height: 70vh;
 }
 
 form {
   display: flex;
   flex-direction: column;
   width: 100%;
+  
 }
 
 label {
+  color: #f2bc4e;
+  text-shadow: 1px 1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+    -1px -1px 0 black;
   font-size: 1.1rem;
   margin-top: 10px;
 }
@@ -75,9 +117,11 @@ input {
 }
 
 button {
+  color: #f2bc4e;
+  text-shadow: 1px 1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+    -1px -1px 0 black;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0);
-  color: rgb(0, 0, 0);
   border: 1px solid rgb(0, 0, 0);
   border-radius: 6px;
   cursor: pointer;
@@ -85,7 +129,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  color: #507f5c;
 }
 
 .error {
@@ -129,129 +173,124 @@ input[type="checkbox"]:checked {
   color: #000;
   margin-top: 5px;
   font-size: 1.25rem;
+  text-decoration: none;
 }
+
 .submit {
   display: flex;
   justify-content: center;
   gap: 50px; /* Espacio entre botones */
   margin-top: 10px;
+  
 }
 
-/* Tablets: 577px a 991px */
+.button_back{
+  position:fixed;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.button_back button{
+
+  padding: 0;
+  color: #f2bc4e;
+  text-shadow: 1px 1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+    -1px -1px 0 black;
+  width: 100px;
+  height: 50px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+  background-image: url("../img/piedra2.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+}
+.button_back a{
+  text-decoration: none;
+}
+
+.button_back button:hover{
+  background-color: transparent;
+  color: #507f5c;
+}
+.form_container,
+.logo img,
+.button_back button {
+  transition: all 0.3s ease-in-out;
+}
+
+
+
+/* Tablets */
 @media (min-width: 577px) and (max-width: 991px) {
-  body {
-    width: auto;
-  }
-  h1 {
-    font-size: 1.25rem;
-    margin-top: 18px;
-    height: auto;
-    margin-bottom: 5px;
+  *{
+    font-size:medium;
   }
   .form_container {
-    width: 60%;
-    padding: 60px;
-    background-size: 150% 125%;
-    height: 68vh;
-    position: relative;
-    transform: scale(1);
-    margin: 0 100px ;
-    font-size: 0.5rem;
-  }
-
-  label {
-    font-size: 1.2rem;
-    margin: 1px;
-    width: auto;
-  }
-
-  input {
-    font-size: 1.2rem;
-    width: auto;
-    margin: 5px 5px;
-  }
-
-  button {
-    width: 50vw;
-    font-size: 1rem;
-    position: relative;
-
-  }
-
-  .submit {
-    gap: 60px;
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .login {
-    font-size: 1.2rem;
-  }
-
-  .up {
-    width: auto;
-    height: 10vh;
-  }
-
-  .down {
     width: 80%;
+    padding: 20px;
+    max-width: 400px;
+    background-size: 165% 120%;
+    height: 85vh;
+    
+
   }
+
+  .logo img {
+    height: 45px;
+  }
+
+  .button_back button {
+    width: 80px;
+    height: 40px;
+    font-size: 12px;
+  }
+
+.navbar{
+  height:7%;
 }
 
-/* Responsive: móviles de 320px a 576px */
+}
+
+/* Móviles */
 @media (max-width: 576px) {
-  body {
-    width: auto;
+
+  *{
+    font-size: small;
   }
-  h1 {
-    font-size: 1.5rem;
-    margin-top: 18px;
-    margin-bottom: 5px;
-  }
+
   .form_container {
-    width: 400px;
-    padding: 35px;
-    background-size: 170% 125%;
-    height: 85vh;
-    position: relative;
-    transform: scale(0.8);
-  }
-
-  label {
-    font-size: 1.2rem;
-    width: auto;
-  }
-
-  input {
-    font-size: 1.1rem;
-    max-width: 260px;
-    position: relative;
-    width: auto;
-  }
-
-  button {
-    width: 50vw;
-    font-size: 1.09rem;
-    position: relative;
-    height: 30%;
-
-  }
-
-  .submit {
-    gap: 65px;
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .login {
-    font-size: 1.1rem;
-  }
-
-  .up {
-    width: auto;
-  }
-
-  .down {
     width: 80%;
+    padding: 20px;
+    max-width: 350px;
+    height:75vh;
+  }
+
+  .logo img {
+    height: 40px;
+  }
+
+  .button_back {
+    bottom: 5px;
+    left: 5px;
+  }
+
+  .button_back button {
+    width: 70px;
+    height: 35px;
+    font-size: 11px;
   }
 }
