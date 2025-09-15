@@ -21,6 +21,9 @@ const showPassword = (input, showPass) => {
   });
 };
 
+// Importamos las funciones que necesitamos del módulo auth
+import { iniciarSesion } from "./auth.js";
+
 window.addEventListener("load", () => {
   const input = document.getElementById("password");
   const showPass = document.getElementById("showPass");
@@ -30,21 +33,65 @@ window.addEventListener("load", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/api", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: document.getElementById("username").value,
-          password: input.value,
-        }),
-      });
-      if (!response.ok) {
-        showMessage(elementInput, false, "Error al enviar el formulario");
+      // Limpiar mensajes previos
+      elementInput.innerHTML = "";
+      elementInput.classList.remove("success");
+
+      // Mostrar mensaje de carga
+      showMessage(elementInput, true, "Iniciando sesión...");
+
+      // Obtener los valores de los campos
+      const identifier = document.getElementById("email").value;
+      const password = input.value;
+
+      // Validar que se hayan ingresado los campos
+      if (!identifier || !password) {
+        showMessage(elementInput, false, "Todos los campos son obligatorios");
         return;
       }
-      showMessage(elementInput, true, "Login exitoso");
+
+      // Mostrar datos para depuración (solo en desarrollo)
+      console.log("Intentando login con:", { identifier, password });
+
+      // Usar la función importada para iniciar sesión
+      console.log("Enviando petición a:", identifier, password);
+      const result = await iniciarSesion(identifier, password);
+      console.log("Resultado del login:", result);
+
+      if (!result.success) {
+        // Mensaje detallado para depuración (solo durante desarrollo)
+        let mensajeError =
+          result.message || "Credenciales inválidas. Verifica tus datos.";
+
+        // Si hay un error de parsing, mostrar más detalles
+        if (result.error === "parse_error") {
+          mensajeError += " (Error de formato en la respuesta)";
+          console.log("Texto de la respuesta:", result.responseText);
+        }
+
+        showMessage(elementInput, false, mensajeError);
+        console.log("Error de servidor:", result);
+        return;
+      }
+
+      // Login exitoso
+      showMessage(elementInput, true, "Login exitoso! Redirigiendo...");
+      console.log("Login exitoso:", result);
+
+      // Los datos del usuario ya se guardaron en la función iniciarSesion
+
+      // Redirigir a la página de menú después de 1 segundo
+      setTimeout(() => {
+        window.location.href = "menu-player.html";
+      }, 1000);
     } catch (error) {
-      showMessage(elementInput, false, "Error al enviar el formulario");
+      // Mensaje genérico para cualquier error técnico
+      console.error("Error al iniciar sesión:", error);
+      showMessage(
+        elementInput,
+        false,
+        "Error de conexión. Inténtalo nuevamente más tarde."
+      );
     }
   });
 

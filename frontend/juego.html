@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/juego.css" />
+    <link rel="stylesheet" href="./styles/juego-interactivo.css" />
+    <link rel="stylesheet" href="./styles/game-ui.css" />
+    <link rel="stylesheet" href="./styles/notification.css" />
     <title>Draftosaurus</title>
   </head>
   <body>
@@ -17,137 +20,151 @@
       <div class="container__turno__colocados">
         <div class="turno__player">Jugador 5</div>
         <div class="timer">60s</div>
-        <div class="turno">Turno 1/2</div>
-        <div class="colocados">Dinos 0/12</div>
+        <div class="ronda">Ronda 1/2</div>
+        <div class="colocados">Turno 0/12</div>
       </div>
       <div class="container__tabla">
         <div class="tabla">
           <div class="rec rec__igual cafeteria bosque">
-            <div class="dinos__igual">
-              <div class="prueba amarillo"></div>
-              <div class="prueba rojo"></div>
-              <div class="prueba verde"></div>
-              <div class="prueba rosa"></div>
-              <div class="prueba azul"></div>
-              <div class="prueba naranja"></div>
-            </div>
+            <div class="dinos__igual"></div>
           </div>
           <div class="rec rec__tres cafeteria bosque">
-            <div class="dinos__tres">
-              <div class="prueba verde"></div>
-              <div class="prueba rosa"></div>
-              <div class="prueba azul"></div>
-            </div>
+            <div class="dinos__tres"></div>
           </div>
           <div class="rec rec__pareja cafeteria monta">
-            <div class="dinos__pareja">
-              <div class="prueba amarillo"></div>
-              <div class="prueba rojo"></div>
-              <div class="prueba verde"></div>
-              <div class="prueba rosa"></div>
-              <div class="prueba azul"></div>
-              <div class="prueba naranja"></div>
-            </div>
+            <div class="dinos__pareja"></div>
           </div>
           <div class="rec rec__rio">
-            <div class="dinos__rio">
-              <div class="prueba rojo"></div>
-            </div>
+            <div class="dinos__rio"></div>
           </div>
           <div class="rec rec__rey bani bosque">
-            <div class="dinos__rey">
-              <div class="prueba rosa"></div>
-            </div>
+            <div class="dinos__rey"></div>
           </div>
           <div class="rec rec__noigual bani monta">
-            <div class="dinos__noigual">
-              <div class="prueba amarillo"></div>
-              <div class="prueba rojo"></div>
-              <div class="prueba verde"></div>
-              <div class="prueba rosa"></div>
-              <div class="prueba azul"></div>
-              <div class="prueba naranja"></div>
-            </div>
+            <div class="dinos__noigual"></div>
           </div>
           <div class="rec rec__solo bani monta">
-            <div class="dinos__solo">
-              <div class="prueba rosa"></div>
-            </div>
+            <div class="dinos__solo"></div>
           </div>
         </div>
       </div>
       <div class="container__dinos">
         <div class="dinos">
-          <div class="dino dino__uno">
-            <img src="./img/naranjaHori.PNG" alt="" />
-          </div>
-          <div class="dino dino__dos">
-            <img src="./img/amarilloHori.PNG" alt="" />
-          </div>
-          <div class="dino dino__tres">
-            <img src="./img/rosaHori.PNG" alt="" />
-          </div>
-          <div class="dino dino__cuatro">
-            <img src="./img/rojoHori.PNG" alt="" />
-          </div>
-          <div class="dino dino__cinco">
-            <img src="./img/azulHori.PNG" alt="" />
-          </div>
-          <div class="dino dino__seis">
-            <img src="./img/verdeHori.PNG" alt="" />
-          </div>
+          <div class="dino dino__uno"></div>
+          <div class="dino dino__dos"></div>
+          <div class="dino dino__tres"></div>
+          <div class="dino dino__cuatro"></div>
+          <div class="dino dino__cinco"></div>
+          <div class="dino dino__seis"></div>
         </div>
       </div>
       <div class="container__info">
+        <button
+          id="show-opponents-btn"
+          style="
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 9999;
+          "
+        >
+          Seleccionar Oponente
+        </button>
         <div class="info">
+          <!-- Jugador con mayor puntuación (1er lugar) -->
           <div class="user king">
             <div class="icon__user"></div>
             <div class="info__users">
               <div class="info__users__top">
-                <p class="nombre__user">AgusGamer</p>
-                <div class="corona"></div>
+                <p class="nombre__user">Jugador 1</p>
+                <div class="corona" title="Jugador con mayor puntuación"></div>
               </div>
-              <p class="punto">Puntaje: 42p</p>
+              <p class="punto">Puntaje: 0p</p>
             </div>
           </div>
+          <!-- Jugador con segunda mejor puntuación (2do lugar) -->
           <div class="user user__uno">
             <div class="icon__user"></div>
             <div class="info__users">
-              <p class="nombre__user">TamiGamer</p>
-              <p class="punto">Puntaje: 23p</p>
+              <div class="info__users__top">
+                <p class="nombre__user">Jugador 2</p>
+              </div>
+              <p class="punto">Puntaje: 0p</p>
             </div>
           </div>
-          <div class="user user__dos">
+          <!-- Este elemento se ocultará en juegos de 2 jugadores -->
+          <div class="user user__dos" style="display: none">
             <div class="icon__user"></div>
             <div class="info__users">
-              <p class="nombre__user">BrunoGamer</p>
-              <p class="punto">Puntaje: 12p</p>
-            </div>
-          </div>
-          <div class="user user__tres">
-            <div class="icon__user"></div>
-            <div class="info__users">
-              <p class="nombre__user">EmiGamer</p>
-              <p class="punto">Puntaje: 7p</p>
-            </div>
-          </div>
-          <div class="user user__cuatro">
-            <div class="icon__user"></div>
-            <div class="info__users">
-              <p class="nombre__user">JulioGamer</p>
-              <p class="punto">Puntaje: 2p</p>
-            </div>
-          </div>
-          <div class="user user__cinco">
-            <div class="icon__user"></div>
-            <div class="info__users">
-              <p class="nombre__user">RodaTres</p>
-              <p class="punto">Puntaje: 1p</p>
+              <p class="nombre__user">Jugador 3</p>
+              <p class="punto">Puntaje: 0p</p>
             </div>
           </div>
         </div>
       </div>
     </main>
+    <!-- Contenedor para dados -->
+    <div id="dice-container" class="dice-container" style="display: none"></div>
+
+    <!-- Modal para selección de oponente -->
+    <div
+      id="opponents-modal"
+      class="modal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 10000;
+      "
+    >
+      <div
+        class="modal-content"
+        style="
+          background-color: #fff;
+          padding: 30px;
+          border-radius: 15px;
+          width: 80%;
+          max-width: 600px;
+          max-height: 80vh;
+        "
+      >
+        <div class="modal-header" style="margin-bottom: 20px">
+          <h2>Selecciona un oponente</h2>
+          <span
+            class="close-modal"
+            style="
+              position: absolute;
+              right: 20px;
+              top: 20px;
+              font-size: 24px;
+              cursor: pointer;
+            "
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body">
+          <div id="modal-status" class="modal-status"></div>
+          <div
+            class="opponents-list"
+            id="opponents-list"
+            style="max-height: 60vh; overflow-y: auto"
+          >
+            <!-- Los oponentes se cargarán dinámicamente aquí -->
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
-  <script src="./js/juego.js"></script>
+  <script type="module" src="./js/juego.js"></script>
 </html>

@@ -1,0 +1,43 @@
+/* Estilos para el botón flotante de volver al menú */
+.menu-button-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.back-to-menu-btn {
+  background-image: url("../img/button.png");
+  background-position: center center;
+  background-size: 135% 380%;
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: "FuenteDraftosaurios", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-to-menu-btn:hover {
+  transform: translateY(-3px);
+  background-size: 132% 370%;
+}
+
+.back-to-menu-btn:active {
+  transform: translateY(0);
+}
+
+/* Adaptaciones para diferentes tamaños de pantalla */
+@media (max-width: 768px) {
+  .menu-button-container {
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .back-to-menu-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}

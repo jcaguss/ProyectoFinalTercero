@@ -140,24 +140,27 @@ body {
   grid-column-start: 2;
   grid-column-end: 4;
   grid-row: 3;
-  margin-top: 17px;
-  margin-left: 2px;
-  margin-bottom: 20px;
-  height: 80%;
+  margin-top: 16px;
+  margin-left: 8px;
+  height: 68%;
   width: 30%;
   border-radius: 4px;
 }
 .dinos__rio {
-  width: 20px;
-  margin: 20px auto 0 auto;
+  display: flex;
+  flex-direction: row-reverse;
+  align-self: end;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 4px;
 }
 
 .rec__igual {
   grid-column: 1;
   grid-row: 1;
   height: 100%;
-  margin: 16px 0 5px 14px;
-  width: 74%;
+  margin: 16px 0 0 14px;
+  width: 80%;
   height: 67%;
   border-radius: 4px;
   display: flex;
@@ -171,31 +174,14 @@ body {
   flex-direction: row;
   margin-bottom: 4px;
 }
-.prueba {
+.dinosaurio__recinto {
   display: flex;
   flex-direction: row;
   width: 14px;
   height: 30px;
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: 135% 100%;
-}
-.amarillo {
-  background-image: url("../img/amarilloVerti.PNG");
-}
-.naranja {
-  background-image: url("../img/naranjaVerti.PNG");
-}
-.azul {
-  background-image: url("../img/azulVerti.PNG");
-}
-.verde {
-  background-image: url("../img/verdeVerti.PNG");
-}
-.rojo {
-  background-image: url("../img/rojoVerti.PNG");
-}
-.rosa {
-  background-image: url("../img/rosaVerti.PNG");
+  background-size: 118% 100%;
 }
 
 .rec__tres {
@@ -228,46 +214,39 @@ body {
 .dinos__pareja {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
-  margin-top: 12px;
 }
 .rec__rey {
   grid-column: 3;
   grid-row: 1;
   height: 100%;
-  margin-top: 22px;
-  margin-left: 8px;
-  width: 50%;
-  height: 50%;
+  margin-top: 24px;
+  margin-left: 15px;
+  width: 40%;
+  height: 40%;
   border-radius: 10px;
 }
 .dinos__rey {
-  width: 30px;
-  margin: 0 auto;
-  rotate: 180;
+  display: flex;
+  justify-content: center;
 }
 .rec__noigual {
   grid-column: 3;
   grid-row: 2;
   height: 100%;
-  margin-top: 12px;
+  margin-top: 15px;
+  margin-left: 2px;
   width: 78%;
   height: 73%;
   border-radius: 4px;
   position: relative;
 }
+
 .dinos__noigual {
-  position: absolute;
   display: flex;
   flex-direction: row;
   margin-top: 10px;
-}
-.rec__noigual img {
-  display: flex;
-  flex-direction: row;
-  width: 14.94px;
-  height: 30px;
-  object-fit: cover;
 }
 .rec__solo {
   grid-column: 3;

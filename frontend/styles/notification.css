@@ -1,0 +1,156 @@
+.game-notification {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 16px;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  text-align: center;
+}
+
+.game-notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.game-notification.info {
+  background-color: #2196f3;
+}
+
+.game-notification.success {
+  background-color: #4caf50;
+}
+
+.game-notification.warning {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.game-notification.error {
+  background-color: #f44336;
+}
+
+.bag-swap-indicator {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(33, 150, 243, 0.8);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 9900;
+  transition: opacity 0.3s ease;
+}
+
+.bag-swap-animation {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+.player-bag {
+  position: relative;
+}
+
+.player-bag::after {
+  content: "↔️";
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  animation: swap-arrow 1s ease-in-out infinite;
+  display: none;
+}
+
+.player-bag.swapped::after {
+  display: block;
+}
+
+@keyframes swap-arrow {
+  0% {
+    transform: translateY(-50%) translateX(0);
+  }
+  50% {
+    transform: translateY(-50%) translateX(5px);
+  }
+  100% {
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* -------- Modal overlay (game over) -------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none; /* will be set to flex when opened */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.799); /* dark semi-transparent backdrop */
+  z-index: 10000; /* above notifications */
+}
+
+.modal .modal-content {
+  background: #fbff00e2;
+  font-size: 23px;
+  color: #000000;
+  width: calc(100% - 40px);
+  max-width: 420px;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgb(0, 0, 0);
+  text-align: center;
+  animation: modal-pop 0.2s ease-out;
+}
+
+.modal .modal-content h2 {
+  margin-top: 0;
+}
+
+.modal .modal-content #final-scores p {
+  margin: 8px 0 0 0;
+}
+
+.modal .modal-content button {
+  margin-top: 16px;
+  background-color: #0000007d;
+  color: #000000;
+  border: 0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modal .modal-content button:hover {
+  background-color: #035500;
+  color: #fff;
+}
+
+@keyframes modal-pop {
+  from {
+    transform: scale(0.98);
+    opacity: 0.95;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

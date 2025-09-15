@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Partidas Pendientes - Draftosaurus</title>
+    <link rel="stylesheet" href="./styles/menuplayer.css" />
+    <style>
+      .game-list-container {
+        width: 80%;
+        max-width: 800px;
+        margin: 30px auto;
+        background-color: rgba(0, 0, 0, 0.237);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .game-list-title {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      .game-list {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .game-item {
+        background-color: #f0f0f025;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .game-item:hover {
+        background-color: #e0e0e0;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .game-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .game-opponent {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .game-date {
+        font-size: 0.85em;
+        color: #666;
+      }
+
+      .game-status {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.85em;
+        font-weight: bold;
+      }
+
+      .status-my-turn {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .status-opponent-turn {
+        background-color: #ff9800;
+        color: white;
+      }
+
+      .no-games-message {
+        text-align: center;
+        color: #666;
+        padding: 20px;
+        font-style: italic;
+      }
+
+      .back-button {
+        display: block;
+        width: 150px;
+        margin: 20px auto;
+        padding: 10px;
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .back-button:hover {
+        background-color: #303f9f;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">
+        <img src="./img/Logo.png" alt="Logo del juego" />
+      </div>
+      <div class="userMenu">
+        <span id="nombre-usuario" class="menuButton userButton">Usuario</span>
+        <div class="dropdown">
+          <p>Ver Perfil</p>
+          <p>Configuración</p>
+          <p id="btn-logout">Cerrar sesión</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="game-list-container">
+      <h2 class="game-list-title">Partidas Pendientes</h2>
+
+      <div id="loading" class="loading">Cargando partidas...</div>
+
+      <ul id="game-list" class="game-list" style="display: none"></ul>
+
+      <div id="no-games" class="no-games-message" style="display: none">
+        No tienes partidas pendientes. ¡Inicia una nueva partida!
+      </div>
+
+      <button id="back-button" class="back-button">Volver al menú</button>
+    </div>
+
+    <template id="game-item-template">
+      <li class="game-item" data-game-id="">
+        <div class="game-info">
+          <span class="game-opponent"></span>
+          <span class="game-date"></span>
+        </div>
+        <div class="game-status"></div>
+      </li>
+    </template>
+
+    <div
+      id="mensaje-sistema"
+      class="mensaje-sistema"
+      style="display: none"
+    ></div>
+
+    <script src="./js/preVolverAJugar.js" type="module"></script>
+  </body>
+</html>

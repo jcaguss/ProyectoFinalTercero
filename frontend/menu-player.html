@@ -1,42 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menú</title>
+    <link rel="stylesheet" href="./styles/menuplayer.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Menú</title>
-  <link rel="stylesheet" href="./styles/menuplayer.css" />
-</head>
-
-<body>
-  <header class="navbar">
-    <div class="logo">
-      <img src="./img/Logo.png" alt="Logo del juego" />
-    </div>
-    <div class="userMenu">
-      <button class="menuButton userButton">Usuario</button>
-      <div class="dropdown">
-        <p>Ver Perfil</p>
-        <p>Configuración</p>
-        <p>Cerrar sesión</p>
+  <body>
+    <header class="navbar">
+      <div class="logo">
+        <img src="./img/Logo.png" alt="Logo del juego" />
       </div>
-    </div>
-  </header>
+      <div class="userMenu">
+        <span id="nombre-usuario" class="menuButton userButton">Usuario</span>
+        <div class="dropdown">
+          <p>Ver Perfil</p>
+          <p>Configuración</p>
+          <p id="btn-logout">Cerrar sesión</p>
+        </div>
+      </div>
+    </header>
 
-  <main class="mainButtons">
-    <a href="./juego.html">
-        <button class="menuButton mainButton">Jugar</button>
-    </a>
-    <a href="./juego.html">
-        <button class="menuButton mainButton">Asistente de juego</button>
-    </a>
-    
-  </main>
-  <footer>
-    <a href="./manual.html">
-        <button class="menuButton helpButton">Cómo jugar</button>
-    </a>    
-  </footer>
-</body>
+    <main class="mainButtons">
+      <button id="btn-nuevo-juego" class="menuButton mainButton">Jugar</button>
+      <button id="btn-volver-jugar" class="menuButton mainButton">
+        Volver a Jugar
+      </button>
+      <button id="btn-continuar" class="menuButton mainButton">
+        Seguimiento de partidas
+      </button>
+    </main>
+    <footer>
+      <button id="btn-manual" class="menuButton helpButton">Cómo jugar</button>
+    </footer>
 
+    <!-- Mensaje del sistema -->
+    <div
+      id="mensaje-sistema"
+      class="mensaje-sistema"
+      style="display: none"
+    ></div>
+  </body>
+  <script src="./js/menu-player.js" type="module"></script>
 </html>

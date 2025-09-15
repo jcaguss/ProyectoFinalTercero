@@ -48,6 +48,13 @@ body {
   border: none;
   background: url("../img/piedra2.png") center no-repeat;
   background-size: 100% 100%;
+}
+
+.dropdown.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   align-content: center;
 }
@@ -130,6 +137,23 @@ footer {
   position: fixed;
   bottom: 20px;
   right: 20px;
+}
+
+/* Mensaje del sistema */
+.mensaje-sistema {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(249, 168, 38, 0.9);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1500;
+  font-size: 18px;
+  text-align: center;
+  max-width: 80%;
 }
 
 @media (max-width: 576px) {
