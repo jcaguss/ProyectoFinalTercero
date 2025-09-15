@@ -311,5 +311,3 @@ BEGIN
     LIMIT 1;
 END//
 DELIMITER ;
-select * from placement;
-select * from games;
