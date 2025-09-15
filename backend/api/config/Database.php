@@ -13,7 +13,7 @@ class Database {
         $this->host = 'localhost';
         $this->db_name = 'draftosaurus';
         $this->username = 'itiuser';
-        $this->password = 'iti2025UserPrueba';
+        $this->password = 'Prueba1234';
     }
 
     public function connect() {

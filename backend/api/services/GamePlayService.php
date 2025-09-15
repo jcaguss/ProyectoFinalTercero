@@ -68,12 +68,6 @@ class GamePlayService
     // -----------------------------
 
     /**
-     * Inicia una nueva partida
-     * @param int $player1Id ID del primer jugador
-     * @param int $player2Id ID del segundo jugador
-     * @return int ID de la partida creada
-     */
-    /**
      * Obtiene las partidas pendientes para un usuario
      * @param int $userId ID del usuario
      * @return array Lista de partidas pendientes
@@ -103,7 +97,12 @@ class GamePlayService
         
         return $pendingGames;
     }
-
+    /**
+     * Inicia una nueva partida
+     * @param int $player1Id ID del primer jugador
+     * @param int $player2Id ID del segundo jugador
+     * @return int ID de la partida creada
+     */
     public function startGame(int $player1Id, int $player2Id): int {
         // Debug info
         error_log("Starting game with players: $player1Id and $player2Id");
@@ -191,7 +190,6 @@ class GamePlayService
      * @param int $enclosureId ID del recinto
      * @return bool true si cumple la restricción, false si no
      */
-
     public function validateDieRestriction(int $gameId, int $playerSeat, int $enclosureId): bool {
         // Obtener última tirada que afecte al jugador actual
         $lastRoll = $this->dieRepo->getLastGameRoll($gameId);

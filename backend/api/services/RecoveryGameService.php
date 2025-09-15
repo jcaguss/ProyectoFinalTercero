@@ -100,10 +100,7 @@ class RecoveryGameService
                 ];
             }
             
-            // Construir estructura para tablero
-            $board1 = ['enclosures' => $enclosures1];
-            $board2 = ['enclosures' => $enclosures2];
-            
+
             // Obtener última tirada de dado
             $lastRoll = $this->dieRepo->getLastGameRoll($gameId);
             

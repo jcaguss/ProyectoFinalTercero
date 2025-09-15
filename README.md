@@ -82,8 +82,8 @@ git clone https://github.com/jcaguss/ProyectoFinalTercero.git
 ```
 host:     localhost ( Por defecto )
 dbname:   draftosaurus ( Nombre de la base de datos )
-usuario:  itiuser(Por defecto es host)
-password: iti2025UserPrueba(Contraseña de ejemplo)
+usuario:  itiuser (Por defecto es host)
+password: iti2025UserPrueba (Contraseña de ejemplo)
 ```
 
 3. Iniciar el servidor backend (desde la carpeta del proyecto):
@@ -104,9 +104,18 @@ php -S localhost:8000 -t backend/api
 
 ---
 
+5. Prueba de recurrencia de partidas.
+
+- La base de datos se encueuntra en la carpeta de /test-data
+
+  - Ejecuta el script de draftosaurus_database.sql en tu conexion de MYSQl
+  - Para poder probar una partida debes de registrar el usuario que se encuentra en register-test.json
+  - Luego ejecuta el script partida_sin_terminar_agustin.sql
+
 ## Equipo de desarrollo
 
 - Arias Emiliano
 - Alcoba Tamara
 - Cáceres Agustín
 - Asconeguy Bruno
+- Ormaechea Mayra

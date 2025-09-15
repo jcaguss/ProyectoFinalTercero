@@ -25,7 +25,6 @@ class Routes {
         // Registramos todas las rutas específicas
         AuthRoutes::register($router);
         GameRoutes::register($router);
-        // IndexRoutes::register($router);
         RecoveryRoutes::register($router);
         
         return $router;
