@@ -9,15 +9,13 @@ const API_URLS = {
 };
 
 // Páginas de la aplicación
-const PAGES = {
+export const PAGES = {
   login: "login.html",
   register: "register.html",
   menu: "menu-player.html",
-  juego: "juego.html",
-  // Mantener la página de selección disponible, pero no usarla por defecto en el menú
   seleccionarOponente: "seleccionar-oponente.html",
   preVolverAJugar: "preVolverAJugar.html",
-  volverAJugar: "volverAJugar.html",
+  juego: "juego.html",
 };
 
 /**
@@ -128,5 +126,4 @@ export {
   obtenerNombreUsuario,
   cerrarSesion,
   API_URLS,
-  PAGES,
 };

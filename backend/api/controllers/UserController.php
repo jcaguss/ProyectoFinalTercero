@@ -70,22 +70,25 @@ class UserController {
     /**
      * Devuelve la lista de oponentes disponibles para un usuario
      */
-    public function getAvailableOpponents($request) {
-        $userId = (int)$request['user_id'];
-        
-        if ($userId <= 0) {
-            return JsonResponse::create([
-                'success' => false,
-                'message' => 'ID de usuario inválido'
-            ], 400);
+    public function getAvailableOpponents($params) {
+        try {
+            if (!isset($params['user_id'])) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Falta user_id']);
+                return;
+            }
+            $uid = (int)$params['user_id'];
+            $repo = $this->userRepository ?? new UserRepository();
+            $list = $repo->getOpponentsWithoutPending($uid);
+            echo json_encode([
+                'success' => true,
+                'count' => count($list),
+                'opponents' => $list
+            ]);
+        } catch (Throwable $e) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Error interno']);
         }
-        
-        $opponents = $this->userRepository->getAvailableOpponents($userId);
-        
-        return JsonResponse::create([
-            'success' => true,
-            'opponents' => $opponents ?: []
-        ]);
     }
     
     /**

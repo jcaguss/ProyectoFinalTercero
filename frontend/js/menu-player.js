@@ -79,7 +79,7 @@ function configurarBotones() {
   if (btnContinuar) {
     btnContinuar.addEventListener("click", function (e) {
       e.preventDefault();
-      window.location.href = "seguimiento.html";
+      window.location.href = PAGES.preVolverAJugar || "preVolverAJugar.html";
     });
   }
 
@@ -91,6 +91,10 @@ function configurarBotones() {
       window.location.href = "manual.html";
     });
   }
+
+  document.getElementById("btn-jugar")?.addEventListener("click", () => {
+    window.location.href = "seleccionar-oponente.html";
+  });
 }
 
 /**

@@ -1,170 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Continuar Partida - Draftosaurus</title>
     <link rel="stylesheet" href="./styles/juego.css" />
-    <link rel="stylesheet" href="./styles/juego-interactivo.css" />
-    <link rel="stylesheet" href="./styles/game-ui.css" />
+    <link rel="stylesheet" href="./styles/floating-button.css" />
     <link rel="stylesheet" href="./styles/notification.css" />
-    <title>Draftosaurus</title>
   </head>
   <body>
     <header class="container__nav">
       <nav class="nav">
         <div class="logo"></div>
-        <div class="user__menu">AgusGamer</div>
+        <div id="username" class="user__menu">Usuario</div>
       </nav>
     </header>
     <main class="container__containers">
       <div class="container__turno__colocados">
-        <div class="turno__player">Jugador 5</div>
-        <div class="timer">60s</div>
-        <div class="ronda">Ronda 1/2</div>
-        <div class="colocados">Turno 0/12</div>
+        <div id="player" class="player">Cargando...</div>
+        <div id="timer" class="timer">60s</div>
+        <div id="ronda" class="ronda">Ronda 1/2</div>
+        <div id="colocados" class="colocados">Turno 0/12</div>
+        <div id="die-result" style="display: none">
+          Esperando resultado del dado...
+        </div>
       </div>
       <div class="container__tabla">
         <div class="tabla">
           <div class="rec rec__igual cafeteria bosque">
-            <div class="dinos__igual"></div>
+            <div id="dinos__igual" class="dinos__igual"></div>
           </div>
           <div class="rec rec__tres cafeteria bosque">
-            <div class="dinos__tres"></div>
+            <div id="dinos__tres" class="dinos__tres"></div>
           </div>
           <div class="rec rec__pareja cafeteria monta">
-            <div class="dinos__pareja"></div>
+            <div id="dinos__pareja" class="dinos__pareja"></div>
           </div>
           <div class="rec rec__rio">
-            <div class="dinos__rio"></div>
+            <div id="dinos__rio" class="dinos__rio"></div>
           </div>
           <div class="rec rec__rey bani bosque">
-            <div class="dinos__rey"></div>
+            <div id="dinos__rey" class="dinos__rey"></div>
           </div>
           <div class="rec rec__noigual bani monta">
-            <div class="dinos__noigual"></div>
+            <div id="dinos__noigual" class="dinos__noigual"></div>
           </div>
           <div class="rec rec__solo bani monta">
-            <div class="dinos__solo"></div>
+            <div id="dinos__solo" class="dinos__solo"></div>
           </div>
         </div>
       </div>
       <div class="container__dinos">
-        <div class="dinos">
-          <div class="dino dino__uno"></div>
-          <div class="dino dino__dos"></div>
-          <div class="dino dino__tres"></div>
-          <div class="dino dino__cuatro"></div>
-          <div class="dino dino__cinco"></div>
-          <div class="dino dino__seis"></div>
-        </div>
+        <div id="player-bag" class="dinos"></div>
       </div>
       <div class="container__info">
-        <button
-          id="show-opponents-btn"
-          style="
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #4caf50;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 9999;
-          "
-        >
-          Seleccionar Oponente
-        </button>
         <div class="info">
-          <!-- Jugador con mayor puntuación (1er lugar) -->
           <div class="user king">
             <div class="icon__user"></div>
             <div class="info__users">
               <div class="info__users__top">
-                <p class="nombre__user">Jugador 1</p>
+                <p id="player1-name" class="nombre__user">Jugador 1</p>
                 <div class="corona" title="Jugador con mayor puntuación"></div>
               </div>
-              <p class="punto">Puntaje: 0p</p>
+              <p id="player1-score" class="punto">Puntaje: 0p</p>
             </div>
           </div>
-          <!-- Jugador con segunda mejor puntuación (2do lugar) -->
           <div class="user user__uno">
             <div class="icon__user"></div>
             <div class="info__users">
               <div class="info__users__top">
-                <p class="nombre__user">Jugador 2</p>
+                <p id="player2-name" class="nombre__user">Jugador 2</p>
               </div>
-              <p class="punto">Puntaje: 0p</p>
-            </div>
-          </div>
-          <!-- Este elemento se ocultará en juegos de 2 jugadores -->
-          <div class="user user__dos" style="display: none">
-            <div class="icon__user"></div>
-            <div class="info__users">
-              <p class="nombre__user">Jugador 3</p>
-              <p class="punto">Puntaje: 0p</p>
+              <p id="player2-score" class="punto">Puntaje: 0p</p>
             </div>
           </div>
         </div>
+      </div>
+      <div id="die-container" class="die-container" style="display: none">
+        <div id="die-face" class="die-face">
+          <span id="die-text">TODOS</span>
+        </div>
+        <p id="die-description" class="die-description">
+          Puedes colocar en cualquier recinto
+        </p>
       </div>
     </main>
-    <!-- Contenedor para dados -->
-    <div id="dice-container" class="dice-container" style="display: none"></div>
 
-    <!-- Modal para selección de oponente -->
-    <div
-      id="opponents-modal"
-      class="modal"
-      style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        z-index: 10000;
-      "
-    >
-      <div
-        class="modal-content"
-        style="
-          background-color: #fff;
-          padding: 30px;
-          border-radius: 15px;
-          width: 80%;
-          max-width: 600px;
-          max-height: 80vh;
-        "
-      >
-        <div class="modal-header" style="margin-bottom: 20px">
-          <h2>Selecciona un oponente</h2>
-          <span
-            class="close-modal"
-            style="
-              position: absolute;
-              right: 20px;
-              top: 20px;
-              font-size: 24px;
-              cursor: pointer;
-            "
-            >&times;</span
-          >
-        </div>
-        <div class="modal-body">
-          <div id="modal-status" class="modal-status"></div>
-          <div
-            class="opponents-list"
-            id="opponents-list"
-            style="max-height: 60vh; overflow-y: auto"
-          >
-            <!-- Los oponentes se cargarán dinámicamente aquí -->
-          </div>
-        </div>
+    <div class="menu-button-container">
+      <button id="back-to-menu" class="back-to-menu-btn">Volver al menú</button>
+    </div>
+
+    <div id="game-over-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h2>¡Fin del juego!</h2>
+        <div id="final-scores"></div>
+        <button id="close-modal-btn">Cerrar</button>
       </div>
     </div>
+
+    <script src="./js/GameDefinitions.js" type="module"></script>
+    <script src="./js/logicaDeJuego.js" type="module"></script>
   </body>
-  <script type="module" src="./js/juego.js"></script>
 </html>

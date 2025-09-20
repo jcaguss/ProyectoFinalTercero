@@ -1,9 +1,3 @@
-/**
- * volverAJugar.js
- * Renderiza los dinosaurios en los recintos y en la bolsa de un solo jugador.
- * No aplica restricción de dado. Tras colocar, muestra loading y cambia al siguiente jugador.
- */
-
 import { obtenerIdUsuario, PAGES } from "./auth.js";
 
 // --- Config ---
@@ -551,3 +545,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Render inicial
   await reloadView();
 });
+
+function selectGame(gameId) {
+  localStorage.setItem("currentGameId", gameId);
+  const gameElement = document.querySelector(`li[data-game-id="${gameId}"]`);
+  if (gameElement) {
+    const opponentName = gameElement
+      .querySelector(".game-opponent")
+      .textContent.replace("Contra: ", "");
+    const fecha = gameElement.querySelector(".game-date").textContent;
+    const esMiTurno = gameElement.querySelector(".status-my-turn") !== null;
+    localStorage.setItem(
+      "selectedGameData",
+      JSON.stringify({
+        game_id: gameId,
+        opponent_name: opponentName,
+        created_at: fecha,
+        is_my_turn: esMiTurno,
+      })
+    );
+  }
+  const targetPage = PAGES && PAGES.juego ? PAGES.juego : "juego.html";
+  window.location.href = `${targetPage}?game_id=${gameId}`;
+}
+
+function irAJuego(gameId) {
+  localStorage.setItem("currentGameId", gameId);
+  const targetPage = PAGES && PAGES.juego ? PAGES.juego : "juego.html";
+  window.location.href = `${targetPage}?game_id=${gameId}`;
+}

@@ -164,6 +164,47 @@ class UserRepository
 
         return $users ?: null;
     }
+
+    /**
+     * Oponentes sin partida IN_PROGRESS contra el usuario dado.
+     * (Solo excluye partidas activas, permite oponentes con partidas finalizadas previas)
+     */
+    public function getOpponentsWithoutPending(int $userId): array
+    {
+        $query = "
+            SELECT u.user_id, u.username, u.email
+            FROM users u
+            WHERE u.role = 'PLAYER'
+              AND u.user_id <> ?
+              AND u.user_id NOT IN (
+                  SELECT DISTINCT
+                         CASE
+                           WHEN g.player1_user_id = ? THEN g.player2_user_id
+                           ELSE g.player1_user_id
+                         END
+                  FROM games g
+                  WHERE (g.player1_user_id = ? OR g.player2_user_id = ?)
+                    AND g.status = 'IN_PROGRESS'
+              )
+            ORDER BY u.username ASC, u.user_id ASC
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        if (!$stmt) {
+            return [];
+        }
+
+        $stmt->bind_param("iiii", $userId, $userId, $userId, $userId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+
+        if ($result) $result->free();
+        $stmt->close();
+
+        return $rows;
+    }
 }
 
 ?>

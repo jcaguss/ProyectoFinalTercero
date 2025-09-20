@@ -53,11 +53,11 @@ Trasladar la experiencia del juego físico a una plataforma online, aplicando co
 │   ├── js/
 │   ├── login.html
 │   ├── register.html
-│   ├── menu.html
-│   ├── juego.html
+│   ├── menu-player.html
 │   ├── seguimiento.html
 │   ├── comojugar.html
-│   ├── volverAJugar.html
+│   ├── juego.html
+│   ├── seleccionar-oponente.html
 │   └── preVolverAJugar.html
 │
 ├── test-data/

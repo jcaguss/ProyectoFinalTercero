@@ -115,53 +115,72 @@ document.addEventListener("DOMContentLoaded", function () {
    * @param {Array} games - Lista de partidas
    */
   function displayGames(games) {
-    // Limpiar la lista
     gameList.innerHTML = "";
 
     if (!games || games.length === 0) {
-      // Mostrar mensaje de no hay partidas
       noGamesMessage.style.display = "block";
       gameList.style.display = "none";
       return;
     }
 
-    // Mostrar la lista
     gameList.style.display = "block";
     noGamesMessage.style.display = "none";
 
-    // Agregar cada partida a la lista
+    const currentUserIdRaw = obtenerIdUsuario();
+    const currentUserId = Number(currentUserIdRaw);
+    const currentUsername = obtenerNombreUsuario();
+
+    const resolveOpponent = (g, myId, myName) => {
+      const p1Id = Number(g.player1_user_id ?? g.player1_id);
+      const p2Id = Number(g.player2_user_id ?? g.player2_id);
+      const p1Name = g.player1_username || g.player1_name || `Jugador ${p1Id}`;
+      const p2Name = g.player2_username || g.player2_name || `Jugador ${p2Id}`;
+
+      let opponent;
+      if (!Number.isNaN(myId)) {
+        if (p1Id === myId && p2Id !== myId) opponent = p2Name;
+        else if (p2Id === myId && p1Id !== myId) opponent = p1Name;
+        else if (p1Id !== myId) opponent = p1Name;
+        else if (p2Id !== myId) opponent = p2Name;
+      } else {
+        // Si el ID del usuario no se pudo parsear, asumimos oponente = player2
+        opponent = p2Name;
+      }
+
+      // Corrección: si terminó siendo mi propio nombre, forzar el otro
+      if (opponent === myName) {
+        if (opponent === p1Name && p2Name !== myName) opponent = p2Name;
+        else if (opponent === p2Name && p1Name !== myName) opponent = p1Name;
+      }
+      return opponent || "Oponente";
+    };
+
     games.forEach((game) => {
       const gameItem = gameItemTemplate.content.cloneNode(true);
       const li = gameItem.querySelector("li");
-
-      // Establecer el ID de la partida
       li.dataset.gameId = game.game_id;
 
-      // Determinar quién es el oponente (player1 o player2)
-      const userId = parseInt(obtenerIdUsuario());
-      let opponentName;
-
-      if (game.player1_user_id === userId) {
-        opponentName = game.player2_username || "Oponente 2";
-      } else {
-        opponentName = game.player1_username || "Oponente 1";
-      }
-
+      const opponentName = resolveOpponent(
+        game,
+        currentUserId,
+        currentUsername
+      );
       gameItem.querySelector(
         ".game-opponent"
       ).textContent = `Contra: ${opponentName}`;
 
-      // Formatear y establecer la fecha
-      const gameDate = new Date(game.created_at.replace(" ", "T") + "Z");
-      const formattedDate = formatDate(gameDate);
-      gameItem.querySelector(".game-date").textContent = formattedDate;
+      const createdRaw = game.created_at || "";
+      const gameDate = new Date(createdRaw.replace(" ", "T") + "Z");
+      gameItem.querySelector(".game-date").textContent = formatDate(gameDate);
 
-      // Establecer el estado
       const statusElement = gameItem.querySelector(".game-status");
+      const activeSeat = game.active_seat;
+      const p1Id = Number(game.player1_user_id ?? game.player1_id);
+      const p2Id = Number(game.player2_user_id ?? game.player2_id);
       const isMyTurn =
         game.is_active_player === true ||
-        (game.active_seat === 0 && game.player1_user_id === userId) ||
-        (game.active_seat === 1 && game.player2_user_id === userId);
+        (activeSeat === 0 && p1Id === currentUserId) ||
+        (activeSeat === 1 && p2Id === currentUserId);
 
       if (isMyTurn) {
         statusElement.textContent = "Tu turno";
@@ -169,16 +188,12 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         statusElement.textContent = "Turno oponente";
         statusElement.classList.add("status-opponent-turn");
-      } // Agregar evento de clic
-      li.addEventListener("click", function () {
-        selectGame(game.game_id);
-      });
+      }
 
-      // Agregar a la lista
+      li.addEventListener("click", () => selectGame(game.game_id));
       gameList.appendChild(gameItem);
     });
   }
-
   // Eliminada la función displayMockGames ya que ahora usamos datos reales de la API
 
   /**
@@ -212,7 +227,6 @@ document.addEventListener("DOMContentLoaded", function () {
    * @param {number} gameId - ID de la partida seleccionada
    */
   function selectGame(gameId) {
-    // Guardar el ID de la partida en localStorage
     localStorage.setItem("currentGameId", gameId);
 
     // Buscar los datos del juego seleccionado en la lista de juegos cargados
@@ -236,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Redirigir a la página de juego
-    window.location.href = `${PAGES.volverAJugar}?game_id=${gameId}`;
+    window.location.href = `${PAGES.juego}?game_id=${gameId}`; // antes PAGES.volverAJugar
   }
 
   /**
@@ -256,4 +270,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // La función cerrarSesion está importada desde auth.js
+
+  // Cuando el usuario selecciona una partida para reanudar:
+  function irAJuego(gameId) {
+    localStorage.setItem("currentGameId", gameId);
+    window.location.href = `${PAGES.juego}?game_id=${gameId}`; // antes volverAJugar.html
+  }
 });

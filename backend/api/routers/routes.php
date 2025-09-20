@@ -26,6 +26,7 @@ class Routes {
         AuthRoutes::register($router);
         GameRoutes::register($router);
         RecoveryRoutes::register($router);
+        UserRoutes::register($router);
         
         return $router;
     }
