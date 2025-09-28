@@ -71,13 +71,13 @@ class RecoveryGameService
             
             // Definición de los recintos standard
             $enclosureDefinitions = [
-                ['id' => 1, 'type' => 'same_type', 'max_slots' => 8],
+                ['id' => 1, 'type' => 'same_type', 'max_slots' => 6],
                 ['id' => 2, 'type' => 'different_type', 'max_slots' => 6],
                 ['id' => 3, 'type' => 'pairs', 'max_slots' => 6],
                 ['id' => 4, 'type' => 'trio', 'max_slots' => 3],
                 ['id' => 5, 'type' => 'king', 'max_slots' => 1],
                 ['id' => 6, 'type' => 'solo', 'max_slots' => 1],
-                ['id' => 7, 'type' => 'river', 'max_slots' => 4],
+                ['id' => 7, 'type' => 'river', 'max_slots' => 6],
             ];
             
             // Crear recintos para jugador 1 (IDs 1-7)

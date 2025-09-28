@@ -12,8 +12,6 @@ require_once __DIR__ . '/../repositories/UserRepository.php';
  *  - El servicio NO conoce detalles de HTTP, retorna arrays que luego el controlador traduce.
  */
 
-require_once __DIR__ . '/../repositories/UserRepository.php';
-
 class AuthService
 {
     /** Instancia única del servicio (patrón Singleton). */

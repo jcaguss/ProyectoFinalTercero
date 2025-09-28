@@ -63,7 +63,42 @@ class Router {
     }
 
     /**
-     * Ejecuta el router para procesar la solicitud actual
+     * Ejecuta el ciclo principal de enrutamiento.
+     *
+     * Flujo:
+     *  1. Aplica encabezados CORS básicos (setCorsHeaders()).
+     *  2. Si el método es OPTIONS responde 200 (preflight) y termina.
+     *  3. Normaliza la ruta (elimina query string).
+     *  4. Intenta coincidencia exacta (método + path) en $this->routes.
+     *     - Si coincide: procesa cuerpo (JSON o form) para métodos != GET y
+     *       despacha al handler (controlador/método o callable).
+     *  5. Si no hay coincidencia exacta, recorre rutas con parámetros {param}:
+     *     - Convierte la ruta registrada en regex.
+     *     - Extrae valores dinámicos y los combina con sus nombres.
+     *     - Para métodos != GET agrega el cuerpo JSON decodificado (si existe).
+     *     - Despacha al handler.
+     *  6. Si ninguna ruta coincide, responde 404 con JSON {error:"Ruta no encontrada"}.
+     *
+     * Formato de handlers soportados:
+     *  - [ $instanciaController, 'metodo' ]
+     *  - [ 'NombreDeClaseController', 'metodo' ] (se instancia)
+     *  - function($params) { ... } (callable)
+     *
+     * Parámetros entregados al handler:
+     *  - Rutas exactas: $params (POST/PUT/DELETE: cuerpo decodificado; GET: vacío).
+     *  - Rutas con parámetros: array asociativo con claves de {param} + datos del cuerpo si aplica.
+     *
+     * Carga de cuerpo:
+     *  - Content-Type application/json: json_decode
+     *  - Otros: intenta parse_str como fallback
+     *
+     * Side effects:
+     *  - Envía salida directa (echo) del handler.
+     *  - Ajusta http_response_code en casos especiales (OPTIONS / 404 / errores básicos).
+     *
+     * No retorna valor útil (flujo termina con output directo).
+     *
+     * @return void
      */
     public function run() {
         // Configurar encabezados CORS para todas las respuestas
@@ -114,16 +149,12 @@ class Router {
             
             // Llamar al controlador o la función
             if (is_array($handler)) {
-                // Es un controlador con método
                 $controller = $handler[0];
                 $methodName = $handler[1];
                 
-                // Verificar si el controlador es un objeto o una clase
                 if (is_object($controller)) {
-                    // Es un objeto (instancia ya creada)
                     echo $controller->$methodName($params);
                 } else if (is_string($controller) && class_exists($controller)) {
-                    // Es una cadena de clase, instanciar
                     $controllerInstance = new $controller();
                     echo $controllerInstance->$methodName($params);
                 } else {
@@ -131,7 +162,6 @@ class Router {
                     echo json_encode(['error' => 'Controlador no válido']);
                 }
             } else if (is_callable($handler)) {
-                // Es una función anónima o closure
                 echo $handler($params);
             }
             return;
@@ -140,27 +170,19 @@ class Router {
         // Si no se encuentra una ruta exacta, buscar rutas con parámetros
         foreach ($this->routes[$method] ?? [] as $routePath => $handler) {
             if (strpos($routePath, '{') !== false) {
-                $routePathBase = explode('?', $routePath)[0]; // Quitar query params si existen
+                $routePathBase = explode('?', $routePath)[0];
                 $pattern = preg_replace('/\{([^}]+)\}/', '([^/]+)', $routePathBase);
                 $pattern = str_replace('/', '\/', $pattern);
                 
-                // Quitar query params de la URL actual para comparar solo la ruta base
                 $pathBase = explode('?', $path)[0];
                 
-                error_log("Router: Comparing route pattern '^$pattern$' with path '$pathBase'");
-                
                 if (preg_match('/^' . $pattern . '$/', $pathBase, $matches)) {
-                    error_log("Router: Route matched. Processing parameters...");
-                    array_shift($matches); // Eliminar la coincidencia completa
+                    array_shift($matches);
                     
-                    // Extraer nombres de parámetros
                     preg_match_all('/\{([^}]+)\}/', $routePath, $paramNames);
                     $paramNames = $paramNames[1];
-                    
-                    // Combinar nombres y valores
                     $params = array_combine($paramNames, $matches);
                     
-                    // Obtener datos POST para solicitudes no GET
                     if ($method !== 'GET') {
                         $input = file_get_contents('php://input');
                         if (!empty($input)) {
@@ -169,16 +191,12 @@ class Router {
                         }
                     }
                     
-                    // Llamar al controlador
                     $controller = $handler[0];
                     $methodName = $handler[1];
                     
-                    // Verificar si el controlador es un objeto o una clase
                     if (is_object($controller)) {
-                        // Es un objeto (instancia ya creada)
                         echo $controller->$methodName($params);
                     } else if (is_string($controller) && class_exists($controller)) {
-                        // Es una cadena de clase, instanciar
                         $controllerInstance = new $controller();
                         echo $controllerInstance->$methodName($params);
                     } else {
@@ -190,7 +208,7 @@ class Router {
             }
         }
         
-        // Si no se encuentra ninguna ruta, retornar 404
+        // 404 si ninguna ruta coincide
         http_response_code(404);
         echo json_encode(['error' => 'Ruta no encontrada']);
     }

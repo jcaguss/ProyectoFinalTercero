@@ -104,13 +104,12 @@ php -S localhost:8000 -t backend/api
 
 ---
 
-5. Prueba de recurrencia de partidas.
+5. Crea la base de datos con usuarios de prueba.
 
 - La base de datos se encueuntra en la carpeta de /test-data
 
   - Ejecuta el script de draftosaurus_database.sql en tu conexion de MYSQl
-  - Para poder probar una partida debes de registrar el usuario que se encuentra en register-test.json
-  - Luego ejecuta el script partida_sin_terminar_agustin.sql
+  - Registrate y ya esta todo listo!!!
 
 ## Equipo de desarrollo
 

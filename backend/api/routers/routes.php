@@ -9,8 +9,6 @@ require_once __DIR__ . '/authRoutes.php';
 require_once __DIR__ . '/gameRoutes.php';
 require_once __DIR__ . '/userRoutes.php';
 require_once __DIR__ . '/recoveryRoutes.php';
-require_once __DIR__ . '/userRoutes.php';
-require_once __DIR__ . '/recoveryRoutes.php';
 
 /**
  * Clase que registra todas las rutas de la aplicación

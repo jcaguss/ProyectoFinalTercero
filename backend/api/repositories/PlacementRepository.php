@@ -323,7 +323,7 @@ class PlacementRepository
      * excepto los que están en un recinto específico.
      *
      * Esto es útil para calcular puntuaciones que dependen
-     * de la presencia de dinos en otros recintos (ej: Isla Solitaria).
+     * de la presencia de dinos en otros recintos (ej: Rey de la selva).
      *
      * @param int $gameId ID de la partida
      * @param int $excludedEnclosureId ID del recinto que se debe excluir

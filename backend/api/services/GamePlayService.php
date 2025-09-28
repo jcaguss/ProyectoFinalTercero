@@ -251,7 +251,7 @@ class GamePlayService
             $totalPoints += $this->calculatePointsForEnclosure($enclosureId, $enclosurePlacements);
         }
 
-        // Bono: +1 por cada dinosaurio rojo en cualquier recinto (tal como seguimiento.js)
+        // Bono: +1 por cada dinosaurio rojo en cualquier recinto
         foreach ($placements as $p) {
             $color = strtolower($p['dino_color'] ?? '');
             if ($color === 'rojo' || $color === 'red') {

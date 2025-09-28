@@ -1,4 +1,38 @@
 import { obtenerIdUsuario, PAGES } from "./auth.js";
+/**
+ * Archivo: logicaDeJuego.js
+ * Responsable de controlar el flujo del juego en curso:
+ *  - Carga de estado (bolsa, recintos, puntajes, turno)
+ *  - Drag & Drop para colocar dinosaurios
+ *  - Actualización de encabezados y paneles de jugadores
+ *  - Detección de fin de partida
+ *
+ * NOTA: Este archivo asume que el backend valida reglas de recintos y puntajes.
+ */
+
+/**
+ * @typedef {Object} DinoBagItem
+ * @property {number} id              ID interno (a veces igual a bag_content_id)
+ * @property {number} [bag_content_id] ID contenido bolsa
+ * @property {number} [species_id]
+ * @property {string} dinosaur_type   Color / tipo (ej: 'rojo', 'verde')
+ * @property {string} [orientation]   'horizontal'|'vertical'
+ */
+
+/**
+ * @typedef {Object} EnclosureDino
+ * @property {number} id
+ * @property {number} [dino_id]
+ * @property {string} dinosaur_type
+ * @property {string} orientation
+ * @property {number} enclosure_id
+ */
+
+/**
+ * @typedef {Object} Scores
+ * @property {number} player1 Puntaje jugador asiento 0
+ * @property {number} player2 Puntaje jugador asiento 1
+ */
 
 // --- Config ---
 const API_BASE = "http://localhost:8000";
@@ -31,6 +65,10 @@ const state = {
   playerNames: { 0: null, 1: null },
 };
 
+/**
+ * Crea (si no existe) y retorna el overlay de carga.
+ * @returns {HTMLDivElement} Overlay
+ */
 function createLoadingOverlay() {
   let overlay = document.getElementById("loading-overlay");
   if (overlay) return overlay;
@@ -50,7 +88,14 @@ function createLoadingOverlay() {
   return overlay;
 }
 
-function showLoading(msg = "Cargando...", ms = 800) {
+/**
+ * Muestra el overlay de carga con un mensaje y lo oculta automáticamente
+ * después de 'ms' milisegundos (no lo oculta si quien llama no hace hide).
+ * @param {string} [msg="Cargando..."] Mensaje a mostrar
+ * @param {number} [ms=500] Delay antes de resolver la promesa
+ * @returns {Promise<void>}
+ */
+function showLoading(msg = "Cargando...", ms = 500) {
   const overlay = createLoadingOverlay();
   const box = document.getElementById("loading-overlay-text");
   if (box) box.textContent = msg;
@@ -58,11 +103,22 @@ function showLoading(msg = "Cargando...", ms = 800) {
   return new Promise((res) => setTimeout(() => res(), ms));
 }
 
+/**
+ * Oculta el overlay de carga si está visible.
+ * @returns {void}
+ */
 function hideLoading() {
   const overlay = document.getElementById("loading-overlay");
   if (overlay) overlay.style.display = "none";
 }
 
+/**
+ * Realiza un fetch y parsea JSON lanzando error con cuerpo si status !ok.
+ * @param {string} url
+ * @param {RequestInit} [options]
+ * @throws {Error} con el status y cuerpo al fallar
+ * @returns {Promise<any>}
+ */
 async function fetchJSON(url, options = {}) {
   const resp = await fetch(url, options);
   if (!resp.ok) {
@@ -72,15 +128,33 @@ async function fetchJSON(url, options = {}) {
   return resp.json();
 }
 
+/**
+ * Construye la ruta de la imagen horizontal según color.
+ * @param {string} color
+ * @returns {string}
+ */
 function imageForHorizontal(color) {
   return `./img/${color}Hori.PNG`;
 }
 
+/**
+ * Construye la ruta de la imagen vertical según color.
+ * @param {string} color
+ * @returns {string}
+ */
 function imageForVertical(color) {
   return `./img/${color}Verti.PNG`;
 }
 
 // --- Header (jugador activo) ---
+/**
+ * Carga el estado del juego (game/state) y actualiza:
+ *  - Nombre de jugador activo
+ *  - Ronda y turno actuales
+ *  - Nombres base de los paneles (sin ordenar por líder)
+ * Usa ensurePlayerNames para cachear nombres reales.
+ * @returns {Promise<void>}
+ */
 async function loadAndRenderHeader() {
   try {
     // Asegurar que tengamos nombres cacheados
@@ -136,6 +210,11 @@ async function loadAndRenderHeader() {
 }
 
 // --- Carga inicial ---
+/**
+ * Determina el seat (0/1) del usuario logueado usando /game/resume.
+ * @param {number} gameId
+ * @returns {Promise<number>} Seat (0 o 1) o 0 por fallback
+ */
 async function determineSeat(gameId) {
   const userId = obtenerIdUsuario();
   try {
@@ -173,6 +252,11 @@ async function determineSeat(gameId) {
   return 0;
 }
 
+/**
+ * Garantiza que los nombres de los jugadores estén cacheados.
+ * No sobrescribe nombres reales con placeholders vacíos.
+ * @returns {Promise<void>}
+ */
 async function ensurePlayerNames() {
   // Si ya están cacheados (nombres reales no vacíos), no hacer nada
   const have0 = !!(state.playerNames[0] && String(state.playerNames[0]).trim());
@@ -196,6 +280,13 @@ async function ensurePlayerNames() {
   }
 }
 
+/**
+ * Carga metadatos de recintos (capacidades) para un asiento.
+ * Si falla, asigna valores por defecto.
+ * @param {number} gameId
+ * @param {number} playerSeat
+ * @returns {Promise<void>}
+ */
 async function loadEnclosuresMeta(gameId, playerSeat) {
   try {
     const meta = await fetchJSON(
@@ -222,6 +313,12 @@ async function loadEnclosuresMeta(gameId, playerSeat) {
   }
 }
 
+/**
+ * Renderiza la bolsa del jugador (drag start en cada dino).
+ * @param {number} gameId
+ * @param {number} playerSeat
+ * @returns {Promise<void>}
+ */
 async function renderBag(gameId, playerSeat) {
   const cont = document.getElementById("player-bag");
   cont.innerHTML = "";
@@ -266,6 +363,13 @@ async function renderBag(gameId, playerSeat) {
   }
 }
 
+/**
+ * Renderiza un recinto específico: limpia y coloca dinosaurios existentes.
+ * @param {number} gameId
+ * @param {number} playerSeat
+ * @param {number} enclosureId
+ * @returns {Promise<void>}
+ */
 async function renderEnclosure(gameId, playerSeat, enclosureId) {
   const containerId = Object.keys(ENCLOSURE_CONTAINER_TO_ID).find(
     (k) => ENCLOSURE_CONTAINER_TO_ID[k] === enclosureId
@@ -300,6 +404,12 @@ async function renderEnclosure(gameId, playerSeat, enclosureId) {
   }
 }
 
+/**
+ * Renderiza todos los recintos en paralelo (Promise.all).
+ * @param {number} gameId
+ * @param {number} playerSeat
+ * @returns {Promise<void>}
+ */
 async function renderAllEnclosures(gameId, playerSeat) {
   const promises = Object.values(ENCLOSURE_CONTAINER_TO_ID).map((id) =>
     renderEnclosure(gameId, playerSeat, id)
@@ -307,6 +417,11 @@ async function renderAllEnclosures(gameId, playerSeat) {
   await Promise.all(promises);
 }
 
+/**
+ * Adjunta eventos de dragover / drop a los elementos .rec
+ * para permitir la colocación según su clase rec__X.
+ * @returns {void}
+ */
 function attachDropHandlers() {
   // Permitir drop en los recintos (rec__*) en lugar de los contenedores internos
   const recs = Array.from(document.querySelectorAll(".rec"));
@@ -389,6 +504,15 @@ function attachDropHandlers() {
   });
 }
 
+/**
+ * Envía un movimiento de turno colocando un dinosaurio en un recinto.
+ * Lanza error si el backend indica fallo (validación de reglas, etc.).
+ * @param {number} gameId
+ * @param {number} playerSeat
+ * @param {number} dinoId
+ * @param {number} enclosureId
+ * @returns {Promise<any>} Respuesta cruda del backend (JSON)
+ */
 async function placeDino(gameId, playerSeat, dinoId, enclosureId) {
   const body = {
     game_id: gameId,
@@ -408,6 +532,16 @@ async function placeDino(gameId, playerSeat, dinoId, enclosureId) {
   return resp;
 }
 
+/**
+ * Recarga la vista completa:
+ *  - Metadatos de recintos
+ *  - Bolsa
+ *  - Recintos
+ *  - Header (turno, ronda)
+ *  - Puntajes y paneles (orden por líder)
+ *  - Detección de fin de juego
+ * @returns {Promise<void>}
+ */
 async function reloadView() {
   await loadEnclosuresMeta(state.gameId, state.playerSeat);
   await Promise.all([
@@ -419,6 +553,11 @@ async function reloadView() {
   await checkAndShowGameOver();
 }
 
+/**
+ * Obtiene y pinta puntajes (GET /game/scores/{id}) y luego
+ * aplica updatePlayerPanels para reflejar líder.
+ * @returns {Promise<void>}
+ */
 async function loadAndRenderScores() {
   try {
     const data = await fetchJSON(`${API_BASE}/api/game/scores/${state.gameId}`);
@@ -432,6 +571,12 @@ async function loadAndRenderScores() {
   }
 }
 
+/**
+ * Actualiza los paneles visuales superior/inferior.
+ * El panel superior siempre muestra al líder (o seat 0 si empate).
+ * @param {Scores} scores
+ * @returns {void}
+ */
 function updatePlayerPanels(scores) {
   // scores.player1 -> asiento 0; scores.player2 -> asiento 1
   const score0 = scores.player1 ?? 0;
@@ -459,7 +604,13 @@ function updatePlayerPanels(scores) {
     }p`;
 }
 
-// --------- Game Over Modal ---------
+/**
+ * Obtiene la cantidad de dinos restantes en bolsa para un asiento.
+ * Retorna 0 si error (considerado vacío).
+ * @param {number} gameId
+ * @param {number} seat
+ * @returns {Promise<number>}
+ */
 async function getBagCount(gameId, seat) {
   try {
     const data = await fetchJSON(`${API_BASE}/api/game/bag/${gameId}/${seat}`);
@@ -469,6 +620,12 @@ async function getBagCount(gameId, seat) {
   }
 }
 
+/**
+ * Comprueba si ambas bolsas están vacías y, de ser así,
+ * obtiene puntajes y muestra modal de fin de juego.
+ * NOTA: Esta heurística depende de que el backend vacíe bolsas al final.
+ * @returns {Promise<void>}
+ */
 async function checkAndShowGameOver() {
   // Consider game over when both bags are empty
   const [c0, c1] = await Promise.all([
@@ -504,6 +661,12 @@ async function checkAndShowGameOver() {
   }
 }
 
+/**
+ * Muestra el modal de fin de juego con título, mensaje y botón para menu.
+ * @param {string} titleText
+ * @param {string} messageHtml (se inserta dentro de <p>)
+ * @returns {void}
+ */
 function showGameOverModal(titleText, messageHtml) {
   const modal = document.getElementById("game-over-modal");
   if (!modal) return;
@@ -522,6 +685,13 @@ function showGameOverModal(titleText, messageHtml) {
 }
 
 // --- Inicio ---
+/**
+ * Listener principal DOMContentLoaded:
+ *  - Lee game_id de query o localStorage
+ *  - Determina seat
+ *  - Prepara drop handlers
+ *  - Lanza primera recarga
+ */
 document.addEventListener("DOMContentLoaded", async () => {
   // game_id por query o localStorage
   const params = new URLSearchParams(window.location.search);
@@ -546,6 +716,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   await reloadView();
 });
 
+/**
+ * Guarda info de una partida seleccionada (oponente, fecha, turno)
+ * y redirige a la pantalla de juego.
+ * @param {number} gameId
+ * @returns {void}
+ */
 function selectGame(gameId) {
   localStorage.setItem("currentGameId", gameId);
   const gameElement = document.querySelector(`li[data-game-id="${gameId}"]`);
@@ -569,6 +745,11 @@ function selectGame(gameId) {
   window.location.href = `${targetPage}?game_id=${gameId}`;
 }
 
+/**
+ * Redirige a la pantalla de juego con el gameId dado.
+ * @param {number} gameId
+ * @returns {void}
+ */
 function irAJuego(gameId) {
   localStorage.setItem("currentGameId", gameId);
   const targetPage = PAGES && PAGES.juego ? PAGES.juego : "juego.html";

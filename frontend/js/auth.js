@@ -16,6 +16,7 @@ export const PAGES = {
   seleccionarOponente: "seleccionar-oponente.html",
   preVolverAJugar: "preVolverAJugar.html",
   juego: "juego.html",
+  seguimiento: "seguimiento.html",
 };
 
 /**

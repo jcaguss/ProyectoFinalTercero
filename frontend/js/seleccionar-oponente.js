@@ -1,8 +1,16 @@
 "use strict";
+
 import { obtenerIdUsuario, obtenerNombreUsuario, PAGES } from "./auth.js";
 
 const API_BASE = "http://localhost:8000";
 
+/**
+ * Realiza un fetch y devuelve el JSON o lanza error con cuerpo textual.
+ * @param {string} url Endpoint completo
+ * @param {RequestInit} [options] Opciones fetch
+ * @returns {Promise<any>} Respuesta parseada
+ * @throws {Error} Cuando status !ok
+ */
 async function fetchJSON(url, options = {}) {
   const resp = await fetch(url, options);
   if (!resp.ok) {
@@ -12,6 +20,13 @@ async function fetchJSON(url, options = {}) {
   return resp.json();
 }
 
+/**
+ * Actualiza el mensaje de estado en la UI.
+ * Cambia clase para permitir estilos por tipo.
+ * @param {string} msg Mensaje a mostrar (vacío para limpiar)
+ * @param {"info"|"error"|"success"} [type="info"] Tipo visual
+ * @returns {void}
+ */
 function setStatus(msg, type = "info") {
   const el = document.getElementById("status");
   if (!el) return;
@@ -19,6 +34,12 @@ function setStatus(msg, type = "info") {
   el.className = `status ${type}`;
 }
 
+/**
+ * Renderiza la lista de oponentes disponibles (sin partida IN_PROGRESS).
+ * Si la lista está vacía muestra el placeholder #empty.
+ * @param {Array<{user_id:number,username?:string,email?:string}>} opponents
+ * @returns {void}
+ */
 function renderOpponents(opponents) {
   const list = document.getElementById("opponents");
   const empty = document.getElementById("empty");
@@ -54,6 +75,11 @@ function renderOpponents(opponents) {
   });
 }
 
+/**
+ * Carga oponentes disponibles desde la API.
+ * Si no hay sesión redirige al login.
+ * @returns {Promise<void>}
+ */
 async function loadOpponents() {
   try {
     const myId = obtenerIdUsuario();
@@ -63,15 +89,21 @@ async function loadOpponents() {
       return;
     }
     const nameEl = document.getElementById("nombre-usuario");
-    if (nameEl)
+    if (nameEl) {
       nameEl.textContent = obtenerNombreUsuario() || `Usuario #${myId}`;
+    }
 
+    setStatus("Cargando oponentes...", "info");
     const data = await fetchJSON(`${API_BASE}/api/user/opponents/${myId}`);
     if (!data || data.success === false) {
       setStatus(data?.message || "No se pudo cargar la lista", "error");
       return;
     }
     const opponents = Array.isArray(data.opponents) ? data.opponents : [];
+    setStatus(
+      opponents.length ? "" : "No hay oponentes disponibles",
+      opponents.length ? "info" : "error"
+    );
     renderOpponents(opponents);
   } catch (e) {
     console.error("[opponents] Error: ", e);
@@ -79,6 +111,12 @@ async function loadOpponents() {
   }
 }
 
+/**
+ * Inicia una partida contra el oponente seleccionado.
+ * Guarda game_id y redirige directo a juego.html.
+ * @param {{user_id:number,username?:string}} opponent
+ * @returns {Promise<void>}
+ */
 async function onStartGame(opponent) {
   try {
     const myId = obtenerIdUsuario();
@@ -110,6 +148,11 @@ async function onStartGame(opponent) {
   }
 }
 
+/**
+ * Inicialización al cargar el DOM:
+ *  - Botón volver al menú
+ *  - Carga de oponentes
+ */
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-volver-menu")?.addEventListener("click", () => {
     window.location.href = PAGES.menu;

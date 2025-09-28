@@ -1,123 +1,143 @@
 /**
- * Menú principal del jugador
+ * menu-player.js
+ * Menú principal del jugador tras autenticarse.
+ * Funciones:
+ *  - Mostrar nombre de usuario
+ *  - Navegar a creación de partida (seleccionar oponente)
+ *  - Navegar a partidas pendientes (preVolverAJugar)
+ *  - Acceso a simulador / seguimiento
+ *  - Logout
+ *
+ * Dependencias:
+ *  - auth.js (obtenerNombreUsuario, cerrarSesion, PAGES)
+ *
+ * NOTA: Hay dos listeners distintos para #btn-continuar; el último redirige a PAGES.seguimiento.
+ *       Elimina uno si no es lo deseado.
  */
+
 "use strict";
 
 import { obtenerNombreUsuario, cerrarSesion, PAGES } from "./auth.js";
 
+/**
+ * Punto de entrada: inicializa al cargar DOM.
+ */
 document.addEventListener("DOMContentLoaded", function () {
-  // Mostrar nombre de usuario desde localStorage
-  const nombreUsuarioElement = document.getElementById("nombre-usuario");
-  if (nombreUsuarioElement) {
-    const username = obtenerNombreUsuario();
-    nombreUsuarioElement.textContent = username || "Jugador";
-  }
-
-  // Configurar eventos de los botones
+  mostrarNombreUsuario();
   configurarBotones();
-
-  // Mostrar mensajes en la URL si los hay
   mostrarMensajesURL();
 });
 
-// Eliminada la función mostrarDatosUsuario ya que no se necesita para la versión simplificada
+/**
+ * Inserta el nombre del usuario logueado en el span correspondiente.
+ * Fallback: 'Jugador'.
+ * @returns {void}
+ */
+function mostrarNombreUsuario() {
+  const nombreUsuarioElement = document.getElementById("nombre-usuario");
+  if (!nombreUsuarioElement) return;
+  const username = obtenerNombreUsuario();
+  nombreUsuarioElement.textContent = username || "Jugador";
+}
 
 /**
- * Configura todos los botones del men�
+ * Configura todos los botones del menú (event listeners).
+ * Incluye:
+ *  - Dropdown user
+ *  - Logout
+ *  - Nuevo juego (seleccionar oponente)
+ *  - Reanudar / continuar (preVolverAJugar)
+ *  - Manual
+ *  - Botón jugar (alias de nuevo)
+ *  - Botón continuar (SEGUNDO listener lo envía a seguimiento)
+ * @returns {void}
  */
 function configurarBotones() {
-  // Configurar dropdown del usuario
+  // Dropdown usuario
   const userButton = document.querySelector(".userButton");
   const dropdown = document.querySelector(".dropdown");
-
   if (userButton && dropdown) {
-    userButton.addEventListener("click", function () {
+    userButton.addEventListener("click", () => {
       dropdown.style.display =
         dropdown.style.display === "block" ? "none" : "block";
     });
-
-    // Cerrar dropdown al hacer clic fuera
-    document.addEventListener("click", function (event) {
-      if (!event.target.closest(".userMenu")) {
-        dropdown.style.display = "none";
-      }
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".userMenu")) dropdown.style.display = "none";
     });
   }
 
-  // Botón para cerrar sesión
+  // Logout
   const btnLogout = document.getElementById("btn-logout");
   if (btnLogout) {
-    btnLogout.addEventListener("click", function (e) {
+    btnLogout.addEventListener("click", (e) => {
       e.preventDefault();
-      // Cerrar sesión y redirigir al login
-      cerrarSesion();
+      cerrarSesion(); // auth.js debe manejar la redirección final
     });
   }
 
-  // Bot�n para juego nuevo
+  // Nuevo juego → seleccionar oponente
   const btnNuevo = document.getElementById("btn-nuevo-juego");
   if (btnNuevo) {
-    btnNuevo.addEventListener("click", function (e) {
+    btnNuevo.addEventListener("click", (e) => {
       e.preventDefault();
-      // Redirigir a la selección de oponente
       window.location.href =
         PAGES.seleccionarOponente || "seleccionar-oponente.html";
     });
   }
 
-  // Botón para volver a jugar
+  // Volver a jugar (alias reanudar)
   const btnVolverJugar = document.getElementById("btn-volver-jugar");
   if (btnVolverJugar) {
-    btnVolverJugar.addEventListener("click", function (e) {
+    btnVolverJugar.addEventListener("click", (e) => {
       e.preventDefault();
       window.location.href = PAGES.preVolverAJugar;
     });
   }
 
-  // Bot�n para continuar juegos
+  // Continuar juegos (primer listener)
   const btnContinuar = document.getElementById("btn-continuar");
   if (btnContinuar) {
-    btnContinuar.addEventListener("click", function (e) {
+    btnContinuar.addEventListener("click", (e) => {
       e.preventDefault();
       window.location.href = PAGES.preVolverAJugar || "preVolverAJugar.html";
     });
   }
 
-  // Bot�n para ver manual
+  // Manual / reglas
   const btnManual = document.getElementById("btn-manual");
   if (btnManual) {
-    btnManual.addEventListener("click", function (e) {
+    btnManual.addEventListener("click", (e) => {
       e.preventDefault();
       window.location.href = "manual.html";
     });
   }
 
+  // Botón jugar (otro acceso a selección de oponente)
   document.getElementById("btn-jugar")?.addEventListener("click", () => {
     window.location.href = "seleccionar-oponente.html";
+  });
+
+  // Continuar (SEGUNDO listener: sobrescribe intención previa → seguimiento)
+  document.getElementById("btn-continuar")?.addEventListener("click", () => {
+    window.location.href = PAGES.seguimiento;
   });
 }
 
 /**
- * Muestra mensajes pasados por URL
+ * Lee parámetros de la URL y muestra un mensaje temporal si existe 'mensaje'.
+ * @returns {void}
  */
 function mostrarMensajesURL() {
   const params = new URLSearchParams(window.location.search);
   const mensaje = params.get("mensaje");
+  if (!mensaje) return;
 
-  if (mensaje) {
-    // Buscar elemento para mostrar mensajes
-    const mensajeElement = document.getElementById("mensaje-sistema");
-    if (mensajeElement) {
-      mensajeElement.textContent = mensaje;
-      mensajeElement.style.display = "block";
-
-      // Ocultar despu�s de unos segundos
-      setTimeout(() => {
-        mensajeElement.style.display = "none";
-      }, 5000);
-    } else {
-      // Si no hay elemento para mostrar, usar alert
-      alert(mensaje);
-    }
+  const mensajeElement = document.getElementById("mensaje-sistema");
+  if (mensajeElement) {
+    mensajeElement.textContent = mensaje;
+    mensajeElement.style.display = "block";
+    setTimeout(() => (mensajeElement.style.display = "none"), 5000);
+  } else {
+    alert(mensaje);
   }
 }

@@ -108,8 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // Se eliminó la función getMockGames ya que ahora usamos datos reales de la API
-
   /**
    * Muestra las partidas en la lista
    * @param {Array} games - Lista de partidas
@@ -194,7 +192,6 @@ document.addEventListener("DOMContentLoaded", function () {
       gameList.appendChild(gameItem);
     });
   }
-  // Eliminada la función displayMockGames ya que ahora usamos datos reales de la API
 
   /**
    * Formatea una fecha para mostrarla
