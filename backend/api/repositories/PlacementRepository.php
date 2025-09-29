@@ -460,8 +460,8 @@ class PlacementRepository
         $stmt->bind_param("iii", $gameId, $playerSeat, $speciesId);
         $stmt->execute();
 
-    $result = $stmt->get_result();
-    $row = $result ? $result->fetch_assoc() : null;
+        $result = $stmt->get_result();
+        $row = $result ? $result->fetch_assoc() : null;
 
         if ($result) $result->free();
         $stmt->close();
