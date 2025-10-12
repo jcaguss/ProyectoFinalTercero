@@ -11,6 +11,7 @@ require_once __DIR__ . '/userRoutes.php';
 require_once __DIR__ . '/recoveryRoutes.php';
 require_once __DIR__ . '/userRoutes.php';
 require_once __DIR__ . '/recoveryRoutes.php';
+require_once __DIR__ . '/adminRoutes.php';
 
 /**
  * Clase que registra todas las rutas de la aplicación
@@ -26,6 +27,7 @@ class Routes {
         AuthRoutes::register($router);
         GameRoutes::register($router);
         RecoveryRoutes::register($router);
+        AdminRoutes::register($router);
         
         return $router;
     }

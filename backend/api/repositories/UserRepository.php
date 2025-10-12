@@ -6,7 +6,6 @@ class UserRepository
 {
     private static ?UserRepository $instance = null;
     private mysqli $conn;
-
     private function __construct()
     {
         $db = new Database();

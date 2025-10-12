@@ -38,7 +38,7 @@ class Logger {
         $this->write('TRACE', $e->getTraceAsString());
     }
 }
-<?php
+
 /**
  * Simple logging utility class
  * This implementation works without external dependencies

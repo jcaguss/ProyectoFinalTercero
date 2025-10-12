@@ -12,8 +12,8 @@ class Database {
         // Configuración de la base de datos directamente en la clase
         $this->host = 'localhost';
         $this->db_name = 'draftosaurus';
-        $this->username = 'itiuser';
-        $this->password = 'Prueba1234';
+        $this->username = 'root';
+        $this->password = 'root';
     }
 
     public function connect() {
