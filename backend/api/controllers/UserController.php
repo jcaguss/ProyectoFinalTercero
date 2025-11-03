@@ -71,17 +71,26 @@ class UserController {
      * Devuelve la lista de oponentes disponibles para un usuario
      */
     public function getAvailableOpponents($request) {
-        $userId = (int)$request['user_id'];
-        
-        if ($userId <= 0) {
-            return JsonResponse::create([
-                'success' => false,
-                'message' => 'ID de usuario inválido'
-            ], 400);
+        // Verificar autenticación
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $authenticatedUserId = $_SESSION['user_id'] ?? null;
+        if (!$authenticatedUserId) {
+            return JsonResponse::create(['success' => false, 'message' => 'No autorizado'], 401);
+        }
+
+        if (!isset($request['user_id'])) {
+            return JsonResponse::create(['success' => false, 'message' => 'Falta user_id'], 400);
         }
         
-        $opponents = $this->userRepository->getAvailableOpponents($userId);
-        
+        $requestedUserId = (int)$request['user_id'];
+        // Verificar que el usuario autenticado esté solicitando SUS propios oponentes
+        if ($requestedUserId !== $authenticatedUserId) {
+            return JsonResponse::create(['success' => false, 'message' => 'No autorizado'], 403);
+        }
+
+        $opponents = $this->userRepository->getAvailableOpponents($requestedUserId);
         return JsonResponse::create([
             'success' => true,
             'opponents' => $opponents ?: []
@@ -110,11 +119,10 @@ class UserController {
             ], 404);
         }
         
+        // Información pública: username y email (sin contraseña ni rol)
         return JsonResponse::create([
             'success' => true,
             'user' => $user
         ]);
     }
 }
-
-?>

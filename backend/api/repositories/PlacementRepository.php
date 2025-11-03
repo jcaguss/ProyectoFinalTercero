@@ -244,7 +244,7 @@ class PlacementRepository
     // -----------------------------
     // Obtener todos los recintos (solo IDs y nombres)
     // -----------------------------
-    public function getAllEnclosures(int $gameId = null): array
+    public function getAllEnclosures(?int $gameId = null): array
     {
         try {
                         

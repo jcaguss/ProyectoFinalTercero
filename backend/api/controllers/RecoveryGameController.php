@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../services/RecoveryGameService.php';
 require_once __DIR__ . '/../utils/JsonResponse.php';
+require_once __DIR__ . '/../repositories/GameRepository.php';
 
 class RecoveryGameController {
     private RecoveryGameService $recoveryService;
@@ -40,16 +41,27 @@ class RecoveryGameController {
      */
     public function getInProgressGames($request) {
         try {
+            // Verificar autenticación y propiedad
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $authenticatedUserId = $_SESSION['user_id'] ?? null;
+            if (!$authenticatedUserId) {
+                return JsonResponse::create(['error' => 'Usuario no autenticado'], 401);
+            }
+
             if (!isset($request['user_id'])) {
                 return JsonResponse::create(['error' => 'Missing user_id'], 400);
             }
 
-            $games = $this->recoveryService->getInProgressGames($request['user_id']);
-            
-            return JsonResponse::create([
-                'success' => true,
-                'games' => $games
-            ]);
+            $requestedUserId = (int)$request['user_id'];
+            // Verificar que el usuario autenticado esté solicitando SUS propias partidas
+            if ($requestedUserId !== $authenticatedUserId) {
+                return JsonResponse::create(['error' => 'No autorizado'], 403);
+            }
+
+            $games = $this->recoveryService->getInProgressGames($requestedUserId);
+            return JsonResponse::create(['success' => true, 'games' => $games]);
 
         } catch (Exception $e) {
             return JsonResponse::create(['error' => $e->getMessage()], 500);
@@ -116,40 +128,40 @@ class RecoveryGameController {
      */
     public function resumeGame($request) {
         try {
+            // Verificar autenticación
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $userId = $_SESSION['user_id'] ?? null;
+            if (!$userId) {
+                return JsonResponse::create(['error' => 'Usuario no autenticado'], 401);
+            }
+
             if (!isset($request['game_id'])) {
                 return JsonResponse::create(['error' => 'Missing game_id'], 400);
             }
 
-            // Obtener user_id si está disponible (puede venir como parámetro GET o en la ruta)
-            $userId = null;
-            if (isset($request['user_id'])) {
-                $userId = intval($request['user_id']);
-            } elseif (isset($_GET['user_id'])) {
-                $userId = intval($_GET['user_id']);
+            $gameId = (int)$request['game_id'];
+            
+            // Verificar que el usuario pertenezca a la partida
+            $gameRepo = GameRepository::getInstance();
+            $game = $gameRepo->getGameById($gameId);
+            if (!$game || ((int)$game['player1_user_id'] !== $userId && (int)$game['player2_user_id'] !== $userId)) {
+                return JsonResponse::create(['error' => 'No autorizado'], 403);
             }
-            
-            error_log("RecoveryGameController: Resuming game {$request['game_id']} for user $userId");
-            error_log("Request params: " . json_encode($request));
-            error_log("GET params: " . json_encode($_GET));
 
-            $gameState = $this->recoveryService->resumeGame($request['game_id'], $userId);
-            
+            error_log("RecoveryGameController: Resuming game $gameId for user $userId");
+
+            $gameState = $this->recoveryService->resumeGame($gameId, $userId);
             if (!$gameState) {
-                error_log("RecoveryGameController: Game state is null for game {$request['game_id']}");
                 return JsonResponse::create(['error' => 'Game not found or not in progress'], 404);
             }
 
-            return JsonResponse::create([
-                'success' => true,
-                'game_state' => $gameState
-            ]);
+            return JsonResponse::create(['success' => true, 'game_state' => $gameState]);
 
         } catch (Exception $e) {
-            // Log detailed error information
             error_log("RecoveryGameController ERROR: " . $e->getMessage());
             error_log("Stack trace: " . $e->getTraceAsString());
-            
-            // Return a more detailed error message to help debugging
             return JsonResponse::create([
                 'error' => $e->getMessage(),
                 'trace' => explode("\n", $e->getTraceAsString())[0]

@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../services/GamePlayService.php';
 require_once __DIR__ . '/../repositories/UserRepository.php';
 require_once __DIR__ . '/../utils/JsonResponse.php';
+require_once __DIR__ . '/../repositories/GameRepository.php';
 
 class GamePlayController {
     private GamePlayService $gamePlayService;
@@ -83,8 +84,7 @@ class GamePlayController {
      */
     public function getPendingGames() {
         try {
-            // Verificar que el usuario esté autenticado
-            $userId = $_SESSION['user_id'] ?? null;
+            $userId = $this->getAuthenticatedUserId();
             if (!$userId) {
                 return JsonResponse::create(['error' => 'Usuario no autenticado'], 401);
             }
@@ -115,6 +115,11 @@ class GamePlayController {
      */
     public function processTurn($request) {
         try {
+            $userId = $this->getAuthenticatedUserId();
+            if (!$userId) {
+                return JsonResponse::create(['success' => false, 'error' => 'No autorizado'], 401);
+            }
+
             // Validar datos de entrada
             $requiredFields = ['game_id', 'player_seat', 'dino_id', 'enclosure_id'];
             foreach ($requiredFields as $field) {
@@ -155,6 +160,14 @@ class GamePlayController {
                 ], 400);
             }
             
+            // Verificar que el usuario pertenezca a la partida y que el player_seat sea correcto
+            if (!$this->isUserInGameAsSeat($userId, $gameId, $playerSeat)) {
+                return JsonResponse::create([
+                    'success' => false,
+                    'error' => 'No autorizado para realizar esta acción'
+                ], 403);
+            }
+
             // Capturar errores específicos en processTurn
             try {
                 // Debug adicional antes de llamar al servicio
@@ -282,6 +295,11 @@ class GamePlayController {
      */
     public function rollDie($request) {
         try {
+            $userId = $this->getAuthenticatedUserId();
+            if (!$userId) {
+                return JsonResponse::create(['error' => 'No autorizado'], 401);
+            }
+
             $requiredFields = ['game_id', 'roller_seat', 'affected_seat', 'die_face'];
             foreach ($requiredFields as $field) {
                 if (!isset($request[$field])) {
@@ -289,10 +307,19 @@ class GamePlayController {
                 }
             }
 
+            $gameId = (int)$request['game_id'];
+            $rollerSeat = (int)$request['roller_seat'];
+            $affectedSeat = (int)$request['affected_seat'];
+
+            // Verificar que el roller_seat corresponda al usuario
+            if (!$this->isUserInGameAsSeat($userId, $gameId, $rollerSeat)) {
+                return JsonResponse::create(['error' => 'No autorizado'], 403);
+            }
+
             $rollId = $this->gamePlayService->rollDie(
-                $request['game_id'],
-                $request['roller_seat'],
-                $request['affected_seat'],
+                $gameId,
+                $rollerSeat,
+                $affectedSeat,
                 $request['die_face']
             );
 
@@ -402,6 +429,11 @@ class GamePlayController {
      */
     public function getGameState($request) {
         try {
+            $userId = $this->getAuthenticatedUserId();
+            if (!$userId) {
+                return JsonResponse::create(['error' => 'No autorizado'], 401);
+            }
+
             if (!isset($request['game_id'])) {
                 error_log("getGameState: Missing game_id in request");
                 return JsonResponse::create(['error' => 'Missing game_id'], 400);
@@ -418,8 +450,11 @@ class GamePlayController {
                 error_log("getGameState: Game with ID $gameId not found");
                 return JsonResponse::create(['error' => 'Game not found'], 404);
             }
-            
-            error_log("getGameState: Game found, status=" . $game['status']);
+
+            // Verificar que el usuario esté en la partida
+            if ((int)$game['player1_user_id'] !== $userId && (int)$game['player2_user_id'] !== $userId) {
+                return JsonResponse::create(['error' => 'No autorizado'], 403);
+            }
 
             // Usamos el servicio de recuperación para obtener el estado completo
             // Esto permite reutilizar el mismo formato que usa resumeGame
@@ -484,6 +519,11 @@ class GamePlayController {
      */
     public function getPlayerBag($request) {
         try {
+            $userId = $this->getAuthenticatedUserId();
+            if (!$userId) {
+                return JsonResponse::create(['error' => 'No autorizado'], 401);
+            }
+
             if (!isset($request['game_id']) || !isset($request['player_seat'])) {
                 return JsonResponse::create(['error' => 'Missing game_id or player_seat'], 400);
             }
@@ -492,6 +532,11 @@ class GamePlayController {
             $playerSeat = (int)$request['player_seat'];
             if ($playerSeat !== 0 && $playerSeat !== 1) {
                 return JsonResponse::create(['error' => 'Invalid player_seat (must be 0 or 1)'], 400);
+            }
+
+            // Verificar que el usuario esté en la partida y que el seat sea correcto
+            if (!$this->isUserInGameAsSeat($userId, $gameId, $playerSeat)) {
+                return JsonResponse::create(['error' => 'No autorizado'], 403);
             }
 
             $bag = $this->gamePlayService->getPlayerBagForUI($gameId, $playerSeat);
@@ -510,6 +555,11 @@ class GamePlayController {
      */
     public function getEnclosureContents($request) {
         try {
+            $userId = $this->getAuthenticatedUserId();
+            if (!$userId) {
+                return JsonResponse::create(['error' => 'No autorizado'], 401);
+            }
+
             $required = ['game_id', 'player_seat', 'enclosure_id'];
             foreach ($required as $f) {
                 if (!isset($request[$f])) {
@@ -548,10 +598,23 @@ class GamePlayController {
      */
     public function getScores($request) {
         try {
+            $userId = $this->getAuthenticatedUserId();
+            if (!$userId) {
+                return JsonResponse::create(['error' => 'No autorizado'], 401);
+            }
+
             if (!isset($request['game_id'])) {
                 return JsonResponse::create(['error' => 'Missing game_id'], 400);
             }
             $gameId = (int)$request['game_id'];
+
+            // Verificar que el usuario esté en la partida
+            $gameRepo = GameRepository::getInstance();
+            $game = $gameRepo->getGameById($gameId);
+            if (!$game || ((int)$game['player1_user_id'] !== $userId && (int)$game['player2_user_id'] !== $userId)) {
+                return JsonResponse::create(['error' => 'No autorizado'], 403);
+            }
+
             $scores = $this->gamePlayService->getCurrentScores($gameId);
             return JsonResponse::create([
                 'success' => true,
@@ -665,5 +728,38 @@ class GamePlayController {
             'is_emergency_state' => true,
             'debug_note' => 'Este es un estado de emergencia creado para desarrollo'
         ];
+    }
+
+    // --- MÉTODOS AUXILIARES DE PROTECCIÓN ---
+
+    /**
+     * Obtiene el ID del usuario autenticado desde la sesión
+     */
+    private function getAuthenticatedUserId(): ?int
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        return isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+    }
+
+    /**
+     * Verifica si un usuario está en una partida y ocupa un asiento específico
+     */
+    private function isUserInGameAsSeat(int $userId, int $gameId, int $playerSeat): bool
+    {
+        $gameRepo = GameRepository::getInstance();
+        $game = $gameRepo->getGameById($gameId);
+        if (!$game) return false;
+
+        $player1Id = (int)$game['player1_user_id'];
+        $player2Id = (int)$game['player2_user_id'];
+
+        if ($playerSeat === 0) {
+            return $player1Id === $userId;
+        } elseif ($playerSeat === 1) {
+            return $player2Id === $userId;
+        }
+        return false;
     }
 }
