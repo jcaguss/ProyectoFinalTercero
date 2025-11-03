@@ -1,0 +1,200 @@
+/* Reset y configuración base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: "FuenteDraftosaurios";
+  src: url("/fonts/CroteauRegular.ttf") format("truetype");
+}
+
+body {
+  background-image: url("/imgs/fondojuego.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: "FuenteDraftosaurios", sans-serif;
+  letter-spacing: 2px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  color: #000;
+}
+
+.container-principal {
+  max-width: 600px;
+  margin: 40px auto;
+  background-image: url("/imgs/rockForm.png");
+  background-position: center;
+  background-size: 170% 125%;
+  background-repeat: no-repeat;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+h1, h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 15px 20px;
+  background-color: rgba(255, 255, 255, 0.0);
+  border-radius: 10px;
+  border: 2px solid #00000060;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  color: #000;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+h1 {
+  font-size: 2.2em;
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-size: 1.6em;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+
+label {
+  font-size: 1.3em;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1em;
+  border: 2px solid #00000064;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "FuenteDraftosaurios", sans-serif;
+  letter-spacing: 2px;
+}
+
+input::placeholder {
+  color: #000000;
+  opacity: 0.7;
+}
+
+
+button.calcular {
+  padding: 16px 24px;
+  font-size: 1.4em;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.11);
+  color: #000;
+  border: 2px solid #0000007e;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  letter-spacing: 2px;
+}
+
+button.calcular:hover {
+  background-color: rgba(187, 187, 187, 0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+#resultado {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid #00000043;
+  border-radius: 10px;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+#resultado p {
+  font-size: 1.2em;
+  margin: 8px 0;
+}
+
+#resultado strong {
+  color: #2c3e50;
+}
+
+#resultado small {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #555;
+  line-height: 1.4;
+}
+
+button.volver {
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 1.1em;
+  background-color: rgba(149, 165, 166, 0.8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.volver:hover {
+  background-color: #7f8c8d;
+}
+
+p[style*="color: red"] {
+  background-color: rgba(255, 0, 0, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #c0392b;
+  margin: 15px 0;
+}
+
+@media (max-width: 768px) {
+  .container-principal {
+    margin: 20px;
+    padding: 20px;
+    background-size: 180% 130%;
+  }
+  
+  h1 {
+    font-size: 1.8em;
+    letter-spacing: 2px;
+  }
+  
+  h2 {
+    font-size: 1.4em;
+    letter-spacing: 2px;
+  }
+  
+  label {
+    font-size: 1.2em;
+  }
+  
+  input, select, button {
+    font-size: 1em;
+    padding: 12px;
+  }
+  
+  #resultado p {
+    font-size: 1.1em;
+  }
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physikesaurus - Calcular Rozamiento</title>
+  <link rel="stylesheet" href="css/calculos.css">
+</head>
+<body>
+  <main class="container-principal">
+    <header>
+      <h1>Physikesaurus</h1>
+      <h2>Ingresa los datos para calcular <strong>Coeficiente de rozamiento</strong></h2>
+    </header>
+
+    <form id="form-rozamiento">
+      <label for="dinosaurio">Elegí un dinosaurio:</label>
+      <select id="dinosaurio">
+        <option value="2.7">Parasaurolophus (2.7 kg)</option>
+        <option value="7.0">Spinosaurus (7.0 kg)</option>
+        <option value="3.0">Brachiosaurus (3.0 kg)</option>
+        <option value="4.5">Tyrannosaurus Rex (4.5 kg)</option>
+        <option value="6.0">Triceratops (6.0 kg)</option>
+        <option value="1.6">Stegosaurus (1.6 kg)</option>
+      </select>
+
+      <label for="angulo">Ángulo del plano (°):</label>
+      <input type="number" id="angulo" step="0.1" min="0.1" max="44.9" placeholder="Ej: 30">
+
+      <button type="button" class="calcular" onclick="calcular()">Calcular</button>
+    </form>
+
+    <div id="resultado"></div>
+
+    <button class="volver" onclick="window.location.href='index.html'">← Volver al inicio</button>
+  </main>
+
+  <script src="js/rozamientoScript.js"></script>
+</body>
+</html>

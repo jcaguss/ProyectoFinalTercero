@@ -93,6 +93,14 @@ function configurarBotones() {
   }
 }
 
+// Botón para ir a Psykesaurus
+const btnPsykesaurus = document.getElementById("btn-psykesaurus");
+if (btnPsykesaurus) {
+  btnPsykesaurus.addEventListener("click", function (e) {
+    e.preventDefault();
+    window.location.href = "index.html";
+}}
+
 /**
  * Muestra mensajes pasados por URL
  */

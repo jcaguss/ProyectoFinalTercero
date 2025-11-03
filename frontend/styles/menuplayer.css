@@ -192,3 +192,12 @@ footer {
     width: 145px;
   }
 }
+
+.fixed-left {
+  position: fixed;
+  left: 0;
+  bottom: 20px;
+  z-index: 1000;
+  margin-left: 20px; /* ← Margen igual al de la derecha */
+  border-radius: 0 8px 8px 0;
+}
